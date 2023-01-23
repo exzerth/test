@@ -20,7 +20,8 @@ export default function Login() {
       })
 
   if(data) {
-    navigate(`/dashboard/${data.user.id}`)
+    // navigate(`/dashboard/${data.user.id}`)
+    window.location = `/dashboard/${data.user.id}`;
   }
 
       console.log("🚀 ~ file: Login.jsx:19 ~ handleLogin ~ data", data)

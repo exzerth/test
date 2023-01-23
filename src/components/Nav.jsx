@@ -9,9 +9,9 @@ export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
   const [data, setData] = useState("");
-  console.log("🚀 ~ file: Settings.jsx:7 ~ Settings ~ data", data);
+  // console.log("🚀 ~ file: Nav.jsx:12 ~ Nav ~ data", data);
   const [error, setError] = useState(false);
-  console.log("🚀 ~ file: Nav.jsx:9 ~ Nav ~ error", error);
+  error && console.log("🚀 ~ file: Nav.jsx:9 ~ Nav ~ error", error);
 
   useEffect(() => {
     const getData = async () => {
@@ -19,7 +19,7 @@ export default function Nav() {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return Navigate("/login");
-      console.log("🚀 ~ file: Dashboard.jsx:31 ~ getData ~ user", user);
+      // console.log("🚀 ~ file: Nav.jsx:31 ~ getData ~ user", user);
       const { data, error } = await supabase
         .from("users")
         .select()
@@ -41,35 +41,49 @@ export default function Nav() {
           <img src={sproutyLogo} alt="sprouty social" />
         </Link>
 
-        <div className="flex justify-center items-center gap-[10px]">
-          <CiDark className="text-[25px] mr-4"/>
+        {data.full_name && <div className="flex justify-center items-center gap-[10px]">
+          <CiDark className="text-[25px] mr-4" />
           <div className="img">
             <Link to="">
               <img
-                src={avatarImg || data.profile_pic_url}
+                src={data.profile_pic_url || avatarImg}
                 className="rounded-circle"
                 height={32}
                 width={32}
-                alt={data.username}
+                alt={data?.username?.charAt(0)?.toUpperCase()}
                 loading="lazy"
               />
             </Link>
           </div>
           <div className="relative">
-            <p className="font-semibold cursor-pointer text-sm after:content-['▾'] after:ml-[2px] after:text-lg" onClick={() => setIsOpen(!isOpen)}>John Doe</p>
+            <p className="font-semibold cursor-pointer text-sm after:content-['▾'] after:ml-[2px] after:text-lg" onClick={() => setIsOpen(!isOpen)}>{data.full_name}</p>
             {isOpen && (
-                <ul className="absolute z-10 bg-white py-2 shadow-targeting w-36 top-[130%] right-[7%]">
-                <li className={`py-2 px-6 ${activeLink === "Profile" ? "bg-activelink" : ""}`} onClick={() => setIsOpen(!isOpen)}>
-                  <Link className="font-normal text-sm" to={"/dashboard/" + data.user_id}  onClick={()=> {setActiveLink("Profile")}}>
+              <ul className="absolute z-10 bg-white py-2 shadow-targeting w-36 top-[130%] right-[7%]">
+                <li className={`py-2 px-6 ${activeLink === "Profile" ? "bg-activelink" : ""}`}
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+                    setActiveLink("Profile");
+                  }}
+                >
+                  <Link className="font-normal text-sm" to={"/dashboard/" + data.user_id}>
                     Profile
                   </Link>
                 </li>
-                <li className={`py-2 px-6 ${activeLink === "Settings" ? "bg-activelink" : ""}`} onClick={() => setIsOpen(!isOpen)}>
-                  <Link className="font-normal text-sm" to={"/settings"} onClick={()=> {setActiveLink("Settings")}}>
+                <li className={`py-2 px-6 ${activeLink === "Settings" ? "bg-activelink" : ""}`}
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+                    setActiveLink("Settings");
+                  }}
+                >
+                  <Link className="font-normal text-sm" to={"/settings"}>
                     Settings
                   </Link>
                 </li>
-                <li className="py-2 px-6" onClick={() => setIsOpen(!isOpen)}>
+                <li className="py-2 px-6 cursor-pointer" onClick={async () => {
+                  setIsOpen(!isOpen);
+                  await supabase.auth.signOut();
+                  window.location.reload();
+                }}>
                   <p className="font-normal text-sm" >
                     Log out
                   </p>
@@ -77,7 +91,7 @@ export default function Nav() {
               </ul>
             )}
           </div>
-        </div>
+        </div>}
       </div>
     </nav>
   );

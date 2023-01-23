@@ -17,41 +17,39 @@ const Error = ({ value }) => {
 };
 
 export default function Dashboard() {
-  const [user, setUser] = useState(null)
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
-
-  console.log("🚀 ~ file: Dashboard.jsx:6 ~ Dashboard ~ data", data);
   const navigate = useNavigate();
+  const [FilterModal, setFilterModal] = useState(false);
 
   let { id } = useParams();
-  
+
   useEffect(() => {
     const getData = async () => {
       const { data: { user } } = await supabase.auth.getUser()
-      if(!user) return navigate("/login")
-      setUser(user);
-      console.log(user);
-      console.log("🚀 ~ file: Dashboard.jsx:31 ~ getData ~ user", user)
+      if (!user) return navigate("/login")
+      // console.log(user);
+      // console.log("🚀 ~ file: Dashboard.jsx:31 ~ getData ~ user", user)
       const { data, error } = await supabase
-      .from('users')
-      .select()
-      .eq('user_id', user.id).order('created_at', { ascending: false })
-      console.log("🚀 ~ file: Dashboard.jsx:34 ~ getData ~ data", data)
+        .from('users')
+        .select()
+        .eq('user_id', user.id).order('created_at', { ascending: false })
+      // console.log("🚀 ~ file: Dashboard.jsx:34 ~ getData ~ data", data)
       setData(data)
       setError(error)
     };
 
     getData();
-  }, [id,navigate]);
+  }, [id, navigate]);
 
-  console.log({data, user});
+  // console.log({data});
 
   if (error) return <Error value={id} />;
 
   return (
     <div className="container mx-auto max-w-[1080px]">
       <StatsSection
+        user_id={data?.[0]?.id}
         username={data?.[0]?.username}
         avatar={data?.[0]?.profile_pic_url}
         isVerified={data?.[0]?.is_verified}
@@ -62,13 +60,18 @@ export default function Dashboard() {
         currFollowers={data?.[0]?.followers}
         currFollowing={data?.[0]?.following}
       />
-      <StatsCard/>
+      <StatsCard />
       <ChartSection
-       data={data}
+        data={data}
         isPrivate={false}
-      
+
       />
-      <Targeting userId={id} avatar={data?.[0]?.profile_pic_url} username={data?.[0]?.username} />
+      <Targeting userId={id}
+        avatar={data?.[0]?.profile_pic_url}
+        username={data?.[0]?.username}
+        setFilterModal2={setFilterModal}
+        filterModal2={FilterModal}
+      />
       <Blacklist userId={id} />
       <Whitelist userId={id} />
 
