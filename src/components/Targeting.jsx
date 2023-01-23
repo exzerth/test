@@ -24,7 +24,6 @@ export default function Targeting({ userId, avatar, username }) {
   const [accountName, setAccountName] = useState("");
   const [selectAccountName, setSelectedAccountName] = useState("");
   const [searchAccounts, setSearchAccounts] = useState([]);
-
   const [FilterModal, setFilterModal] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -105,8 +104,8 @@ export default function Targeting({ userId, avatar, username }) {
       <ModalNew
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
-        />
-      
+      />
+
 
       <div className="shadow-targeting mt-12">
         {/* nav */}
@@ -117,8 +116,8 @@ export default function Targeting({ userId, avatar, username }) {
               <h2 className="text-white">{targetingAccounts?.length} </h2>
             </div>
           </div>
-          <div className="flex gap-3">
-            <Button onClick={() => setIsOpen(!modalIsOpen)} >Custom Settings</Button>
+          <div className="flex gap-3 text-black">
+            <Button className="text-blue" onClick={() => setIsOpen(!modalIsOpen)} >Custom Settings</Button>
             <Button onClick={() => setFilterModal(true)}>
               Targeting Filter
             </Button>
@@ -129,28 +128,28 @@ export default function Targeting({ userId, avatar, username }) {
           {targetingAccounts.map((item) => {
             return (
               <>
-              <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
-                <div className="flex gap-3">
-                  <img src={avatarImg || item.avatar} className="h-11 w-11" alt={item.account} crossOrigin="Anonymous" />
-                  <div className="flex flex-col">
-                    <h1 className="font-bold">@{item.account}</h1>
-                    <p>{numFormatter(item.followers)} Followers</p>
+                <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
+                  <div className="flex gap-3">
+                    <img src={avatarImg || item.avatar} className="h-11 w-11" alt={item.account} crossOrigin="Anonymous" />
+                    <div className="flex flex-col">
+                      <h1 className="font-bold">@{item.account}</h1>
+                      <p>{numFormatter(item.followers)} Followers</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3 items-center">
+                    <p>{countDays(item.created_at)}</p>
+                    <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 mr-5 cursor-pointer">
+                      <ImBin2 className="absolute text-[#8C8C8C] font-semibold" />
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-3 items-center">
-                  <p>{countDays(item.created_at)}</p>
-                  <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 mr-5 cursor-pointer">
-                    <ImBin2 className="absolute text-[#8C8C8C] font-semibold"/>
-                  </div>
-                </div>
-              </div>
               </>
             );
           })}
         </div>
 
 
-        
+
         {/* <div className="mt-5 container">
           <Row>
             <Col xs={12} md={8}>
