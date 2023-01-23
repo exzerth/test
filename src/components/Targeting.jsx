@@ -1,12 +1,8 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from 'react-modal';
 import {
-  Badge,
   Button,
-  ButtonGroup,
-  InputGroup,
-  Spinner,
-  ToggleButton,
 } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";

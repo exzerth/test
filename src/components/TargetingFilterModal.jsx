@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { IoClose } from 'react-icons/io5';
 import MultiRangeSlider from "./MultiRangeSlider/MultiRangeSlider";
