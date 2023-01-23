@@ -17,6 +17,7 @@ const Error = ({ value }) => {
 };
 
 export default function Dashboard() {
+  const [user, setUser] = useState(null)
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
 
@@ -29,6 +30,8 @@ export default function Dashboard() {
     const getData = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if(!user) return navigate("/login")
+      setUser(user);
+      console.log(user);
       console.log("🚀 ~ file: Dashboard.jsx:31 ~ getData ~ user", user)
       const { data, error } = await supabase
       .from('users')
@@ -41,6 +44,8 @@ export default function Dashboard() {
 
     getData();
   }, [id,navigate]);
+
+  console.log({data, user});
 
   if (error) return <Error value={id} />;
 
