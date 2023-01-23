@@ -1,0 +1,84 @@
+import React, { useEffect, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import sproutyLogo from "../images/sprouty.svg";
+import avatarImg from "../images/avatar.svg"
+import { CiDark } from "react-icons/ci"
+
+export default function Nav() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState('');
+  const [data, setData] = useState("");
+  console.log("🚀 ~ file: Settings.jsx:7 ~ Settings ~ data", data);
+  const [error, setError] = useState(false);
+  console.log("🚀 ~ file: Nav.jsx:9 ~ Nav ~ error", error);
+
+  useEffect(() => {
+    const getData = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return Navigate("/login");
+      console.log("🚀 ~ file: Dashboard.jsx:31 ~ getData ~ user", user);
+      const { data, error } = await supabase
+        .from("users")
+        .select()
+        .eq("user_id", user.id);
+      console.log("🚀 ~ file: Dashboard.jsx:34 ~ getData ~ data", data);
+      setData(data[0]);
+      setError(error);
+    };
+
+    getData();
+  }, []);
+
+  return (
+    <nav className="bg-white shadow-nav py-2">
+      <div
+        className="container flex justify-between"
+      >
+        <Link to="/" className="navbar-brand" href="#">
+          <img src={sproutyLogo} alt="sprouty social" />
+        </Link>
+
+        <div className="flex justify-center items-center gap-[10px]">
+          <CiDark className="text-[25px] mr-4"/>
+          <div className="img">
+            <Link to="">
+              <img
+                src={avatarImg || data.profile_pic_url}
+                className="rounded-circle"
+                height={32}
+                width={32}
+                alt={data.username}
+                loading="lazy"
+              />
+            </Link>
+          </div>
+          <div className="relative">
+            <p className="font-semibold cursor-pointer text-sm after:content-['▾'] after:ml-[2px] after:text-lg" onClick={() => setIsOpen(!isOpen)}>John Doe</p>
+            {isOpen && (
+                <ul className="absolute z-10 bg-white py-2 shadow-targeting w-36 top-[130%] right-[7%]">
+                <li className={`py-2 px-6 ${activeLink === "Profile" ? "bg-activelink" : ""}`} onClick={() => setIsOpen(!isOpen)}>
+                  <Link className="font-normal text-sm" to={"/dashboard/" + data.user_id}  onClick={()=> {setActiveLink("Profile")}}>
+                    Profile
+                  </Link>
+                </li>
+                <li className={`py-2 px-6 ${activeLink === "Settings" ? "bg-activelink" : ""}`} onClick={() => setIsOpen(!isOpen)}>
+                  <Link className="font-normal text-sm" to={"/settings"} onClick={()=> {setActiveLink("Settings")}}>
+                    Settings
+                  </Link>
+                </li>
+                <li className="py-2 px-6" onClick={() => setIsOpen(!isOpen)}>
+                  <p className="font-normal text-sm" >
+                    Log out
+                  </p>
+                </li>
+              </ul>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
