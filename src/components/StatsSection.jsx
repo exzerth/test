@@ -17,7 +17,7 @@ const StatsSection = ({ avatar, username, isVerified, name, bio, url, user_id, c
           <div className="grid grid-cols-1 justify-center lg:flex lg:flex-1 lg:items-center ">
             <img className="m-auto rounded-[50%]" src={avatar} alt={username?.charAt(0)?.toUpperCase()} crossOrigin = "Anonymous" />
             <div className="m-auto lg:ml-8">
-              <h4 className="font-semibold text-[22px] text-gray20 text-center">{name}</h4>
+              <h4 className="font-semibold text-[22px] text-gray20 text-center lg:text-start">{name}</h4>
               <div className="flex gap-[2px] m-auto text-center">
                 <p className="font-normal text-sm text-gray20">{username}</p>
                 <FaCheckCircle className="fas fa-check-circle fa-lg ml-2 text-primary" style={{ visibility: isVerified ? 'visible' : 'hidden' }} />
