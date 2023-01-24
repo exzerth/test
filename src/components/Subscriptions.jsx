@@ -1,16 +1,14 @@
 import Axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { RxCaretRight } from "react-icons/rx";
 import { TbRefresh, TbChecks } from "react-icons/tb";
-import { RiPaypalFill } from "react-icons/ri"
-import avatarImg from "../images/avatar.svg"
+import { RiPaypalFill } from "react-icons/ri";
 
 export default function Subscriptions() {
   let { username } = useParams();
-
-
+  const [userResults, setUserResults] = useState(null);
   const [error, setError] = useState(false);
   const [Loading, setLoading] = useState(false);
   console.log("🚀 ~ file: subscriptions.jsx:14 ~ Subscriptions ~ error", error)
@@ -29,10 +27,7 @@ export default function Subscriptions() {
     return today
   };
 
-
-
-  const handelOnClick = async () => {
-    setLoading(true)
+  const getData = useCallback(async () => {
     const options = {
       method: "GET",
       url: "https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile",
@@ -42,34 +37,46 @@ export default function Subscriptions() {
         "X-RapidAPI-Host": "instagram-bulk-profile-scrapper.p.rapidapi.com",
       },
     };
+  
+    try {
+      const response = await Axios.request(options);
+      setUserResults(response);
+    } catch (error) {
+      console.log(error)
+    }
+  },[username]);
+  
+  useEffect(() => {
+    getData();
+  }, [getData]);
 
-    const userResults = await Axios.request(options);
-    console.log("🚀 ~ file: subscriptions.jsx:44 ~ handelOnClick ~ userResults", userResults)
+  const handleOnClick = async () => {
+    setLoading(true);
 
     if (userResults.data[0].name === "INVALID_USERNAME") return setError(true);
-    const { data: { user } } = await supabase.auth.getUser()
-    console.log("🚀 ~ file: subscriptions.jsx:46 ~ handelOnClick ~ user", user)
-    
+      const { data: { user } } = await supabase.auth.getUser()
+      console.log("🚀 ~ file: subscriptions.jsx:46 ~ handelOnClick ~ user", user)
+
     const data = await supabase
       .from("users")
       .update({ username,
-         followers: userResults?.data[0].follower_count ,
-         following : userResults?.data[0].following_count,
-         profile_pic_url : userResults?.data[0]?.profile_pic_url,
-         is_verified : userResults?.data[0]?.is_verified,
-         biography : userResults?.data[0]?.biography,
-         start_time : getStartingDay(),
-         posts : userResults?.data[0].media_count
-        }).eq('user_id', user.id);
-    console.log("🚀 ~ file: subscriptions.jsx:52 ~ handelOnClick ~ data", data)
+        followers: userResults?.data[0].follower_count ,
+        following : userResults?.data[0].following_count,
+        profile_pic_url : userResults?.data[0]?.profile_pic_url,
+        is_verified : userResults?.data[0]?.is_verified,
+        biography : userResults?.data[0]?.biography,
+        start_time : getStartingDay(),
+        posts : userResults?.data[0].media_count
+      }).eq('user_id', user.id);
+      console.log("🚀 ~ file: subscriptions.jsx:52 ~ handelOnClick ~ data", data)
 
-    setLoading(false)
+    setLoading(false);
     navigate(`/dashboard/${user.id}`);
-
   };
+
   return (
     <>
-    <div className="container mx-auto">
+    <div className="container lg:mx-auto sm:px-6">
       <div className="flex flex-col justify-center items-center mt-20">
         <div className="flex gap-5 text-semibold mb-20">
           <p className="opacity-40 text-sm font-bold">Select Your Account</p>
@@ -83,19 +90,19 @@ export default function Subscriptions() {
           <p className="text-gray20 opacity-40 text-sm font-bold">Enter Dashboard</p>
         </div>
 
-          <div className="grid grid-cols-2 justify-center gap-8 mb-12">
+          <div className="grid lg:grid-cols-2 sm:grid-cols-1 justify-center gap-8 mb-12">
             <div>
               {/* instagram name */}
               <div className="shadow-subs flex justify-between items-center mb-10 py-6 px-7 rounded-[10px]">
                 <div className="flex gap-[14px]">
-                  <img width={90} height={90} src={avatarImg} alt="" />
+                  <img className="rounded-[50%]" width={90} height={90} src={userResults?.data[0]?.profile_pic_url} alt="" />
                   <div className="text-gray20 pt-4">
                     <p className="font-bold text-lg">@{username}</p>
-                    <p className="font-medium text-sm">Full name</p>
+                    <p className="font-medium text-sm">{userResults?.data[0].full_name}</p>
                   </div>
                 </div>
                 <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer">
-                  <TbRefresh className="absolute text-[#8C8C8C] font-semibold"/>
+                  <TbRefresh className="absolute text-[#8C8C8C] font-semibold cursor-pointer" onClick={getData}/>
                 </div>
               </div>
 
@@ -106,11 +113,11 @@ export default function Subscriptions() {
                   You may cancel during your free trial and won't be billed,
                   no risk.
                 </p>
-                <button className="bg-[#2255FF] w-full py-4 rounded-[10px] text-base text-white font-bold mb-4" onClick={() => handelOnClick()}>
+                <button className="bg-[#2255FF] w-full py-4 rounded-[10px] text-base text-white font-bold mb-4" onClick={() => handleOnClick()}>
                   <span> {Loading ?  "Loading " : "Card / Debit Card"}  </span>
                 </button>
 
-                <button className="bg-[#FFC439] w-full py-4 rounded-[10px] text-base text-white font-bold relative" onClick={() => handelOnClick()}>
+                <button className="bg-[#FFC439] w-full py-4 rounded-[10px] text-base text-white font-bold relative" onClick={() => handleOnClick()}>
                   <RiPaypalFill className="text-[#003087] text-2xl absolute top-[25%] left-[38%]" />
                   {Loading ? "Loading" : "Paypal"} 
                 </button>

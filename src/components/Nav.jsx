@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import sproutyLogo from "../images/sprouty.svg";
-import avatarImg from "../images/avatar.svg"
 import { CiDark } from "react-icons/ci"
 
 export default function Nav() {
@@ -35,7 +34,7 @@ export default function Nav() {
   return (
     <nav className="bg-white shadow-nav py-2">
       <div
-        className="container flex justify-between"
+        className="container lg:mx-auto sm:px-6 flex justify-between"
       >
         <Link to="/" className="navbar-brand" href="#">
           <img src={sproutyLogo} alt="sprouty social" />
@@ -46,7 +45,7 @@ export default function Nav() {
           <div className="img">
             <Link to="">
               <img
-                src={data.profile_pic_url || avatarImg}
+                src={data.profile_pic_url}
                 className="rounded-circle"
                 height={32}
                 width={32}

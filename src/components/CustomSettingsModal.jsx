@@ -121,11 +121,6 @@ export default function CustomSettingsModal(props) {
                   <p>Unfollow</p>
                   {value === "Interactions_OFF" && (
                     <>
-                      Turning on this setting will pause all interactions on
-                      your account and you will not experience growth. Your
-                      subscription will remain active, even if you turn
-                      interactions off for a period of time. Use our
-                      ‘Recommended’ settings for optimal results.
                     </>
                   )}
                 </div>
