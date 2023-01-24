@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal"
 import { supabase } from "../supabaseClient";
-import { countDays, getAccount, numFormatter, searchAccount } from "../helpers";
+import { countDays, deleteAccount, getAccount, numFormatter, searchAccount } from "../helpers";
 import avatarImg from "../images/avatar.svg"
 import { ImBin2 } from "react-icons/im"
 import { BsFillPlusSquareFill } from "react-icons/bs"
@@ -40,28 +40,6 @@ export default function Whitelist({ userId }) {
   //     setLoading(false);
   //   }
   // };
-
-  const deleteAccount = async (id, user_id, account) => {
-    console.log(id, user_id);
-    if (user_id && id && window.confirm("Are you sure you want to delete this account?")) {
-      setLoadingSpinner(true);
-      const {data, error} = await supabase
-        .from("whitelist")
-        .delete()
-        .eq("user_id", userId)
-        .select()
-        // .match({ account: account })
-        .then((res) => {
-          console.log(res);
-          // if (res.status === 200) {
-          //   setWhitelistAccounts(whitelistAccounts.filter(a => a.account !== account));
-          // }
-        });
-
-        console.log(data, error);
-    }
-    setLoadingSpinner(false);
-  }
 
   useEffect(() => {
     if (accountName.length > 0) {
@@ -128,7 +106,7 @@ export default function Whitelist({ userId }) {
               <>
                 <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
                   <div className="flex gap-3">
-                    <img src={avatarImg || item.avatar} className="h-11 w-11" alt={item.account} crossOrigin="Anonymous" />
+                    <img src={item.avatar || avatarImg} className="h-11 w-11 rounded-full" alt={item.account} crossOrigin="Anonymous" />
                     <div className="flex flex-col">
                       <h1 className="font-bold">@{item.account}</h1>
                       <p>{numFormatter(item.followers)} Followers</p>

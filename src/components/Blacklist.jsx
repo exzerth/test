@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal"
 import { supabase } from "../supabaseClient";
-import { countDays, getAccount, numFormatter, searchAccount } from "../helpers";
+import { countDays, deleteAccount, getAccount, numFormatter, searchAccount } from "../helpers";
 import avatarImg from "../images/avatar.svg"
 import { ImBin2 } from "react-icons/im"
 import { BsFillPlusSquareFill } from "react-icons/bs"
@@ -103,7 +103,7 @@ export default function Blacklist({ userId }) {
               <>
               <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
                 <div className="flex gap-3">
-                  <img src={avatarImg || item.avatar} className="h-11 w-11" alt={item.account} crossOrigin="Anonymous" />
+                  <img src={item.avatar || avatarImg} className="h-11 w-11 rounded-full" alt={item.account} crossOrigin="Anonymous" />
                   <div className="flex flex-col">
                     <h1 className="font-bold">@{item.account}</h1>
                     <p>{numFormatter(item.followers)} Followers</p>
@@ -112,7 +112,9 @@ export default function Blacklist({ userId }) {
                 <div className="flex gap-3 items-center">
                   <p>{countDays(item.created_at)}</p>
                   <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 mr-5  cursor-pointer">
-                    <ImBin2 className="absolute text-[#8C8C8C] font-semibold"/>
+                    <ImBin2 className="absolute text-[#8C8C8C] font-semibold"
+                    onClick={() => deleteAccount(item.id, item.user_id, item.account)}
+                    />
                   </div>
                 </div>
               </div>
