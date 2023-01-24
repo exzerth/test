@@ -1,4 +1,5 @@
 import axios from "axios";
+import { supabase } from "./supabaseClient";
 
 export const numFormatter = (num = 0) => {  
   if (num > 999 && num <= 999949) {
@@ -169,6 +170,26 @@ export const totalLikes = (name) => {
 export const getThDayNameFromDate = (date) => {
   const day = new Date(date).toDateString().slice(0,3);
 return day
+}
+
+export const deleteAccount = async (id, user_id, account) => {
+  console.log(id, user_id);
+  if (user_id && id && window.confirm("Are you sure you want to delete this account?")) {
+    const { data, error } = await supabase
+      .from("whitelist")
+      .delete()
+      .eq("user_id", user_id)
+      .select()
+      // .match({ account: account })
+      .then((res) => {
+        console.log(res);
+        // if (res.status === 200) {
+        //   setWhitelistAccounts(whitelistAccounts.filter(a => a.account !== account));
+        // }
+      });
+
+    console.log(data, error);
+  }
 }
 
 

@@ -22,8 +22,9 @@ const ModalAdd = ({ modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, user
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
     const insertWhitelist = async () => {
-    setLoading(true);
-    if (selectAccountName.length > 0) {
+      // console.log(selectAccountName);
+      if (selectAccountName.length > 0) {
+      setLoading(true);
       const theAccount = await getAccount(selectAccountName);
       const { error } = await supabase.from("whitelist").insert({
         account: selectAccountName,
