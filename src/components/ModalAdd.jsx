@@ -92,14 +92,13 @@ const ModalAdd = ({ modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, user
           <p className='font-bold text-sm opacity-40 text-center px-[100px]'>{subtitle}</p>
           <div className="flex justify-center items-center relative pt-8">
             <div className="flex gap-3">
-              <div>@</div>
               <Typeahead className='w-[600px] bg-inputbkgrd rounded py-[25px] pl-7 font-semibold'
                 onInputChange={(text) => setAccountName(text)}
                 id="pk"
                 onChange={(selected) => {
                   setSelectedAccountName(selected[0]?.username);
                 }}
-                labelKey="username"
+                labelKey="@username"
                 options={searchAccounts} />
             </div>
             <button className='absolute top-[38%] right-[13%] bg-black w-40 py-4 font-semibold rounded text-white'

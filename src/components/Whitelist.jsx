@@ -98,9 +98,9 @@ export default function Whitelist({ userId }) {
         </div>
         {/* body */}
         <div className="grid p-8 gap-4">
-          {whitelistAccounts.map((item) => {
+          {whitelistAccounts.map((item, index) => {
             return (
-              <>
+              <div key={index}>
               <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
                 <div className="flex gap-3">
                   <img src={avatarImg || item.avatar} className="h-11 w-11" alt={item.account} crossOrigin="Anonymous" />
@@ -116,7 +116,7 @@ export default function Whitelist({ userId }) {
                   </div>
                 </div>
               </div>
-              </>
+              </div>
             );
           })}
         </div>
