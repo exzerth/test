@@ -20,26 +20,48 @@ export default function Whitelist({ userId }) {
   const [loading, setLoading] = useState(false);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
-  const insertWhitelist = async () => {
-    setLoading(true);
-    if (selectAccountName.length > 0) {
-      const theAccount = await getAccount(selectAccountName);
-      const { error } = await supabase.from("whitelist").insert({
-        account: selectAccountName,
-        followers: theAccount.data[0].follower_count,
-        avatar: theAccount.data[0].profile_pic_url,
-        user_id: userId,
-      });
-      console.log(
-        "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
-        error
-      );
+  // const insertWhitelist = async () => {
+  //   setLoading(true);
+  //   if (selectAccountName.length > 0) {
+  //     const theAccount = await getAccount(selectAccountName);
+  //     const { error } = await supabase.from("whitelist").insert({
+  //       account: selectAccountName,
+  //       followers: theAccount.data[0].follower_count,
+  //       avatar: theAccount.data[0].profile_pic_url,
+  //       user_id: userId,
+  //     });
+  //     console.log(
+  //       "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
+  //       error
+  //     );
 
-      setAccountName("");
-      setSelectedAccountName("");
-      setLoading(false);
+  //     setAccountName("");
+  //     setSelectedAccountName("");
+  //     setLoading(false);
+  //   }
+  // };
+
+  const deleteAccount = async (id, user_id, account) => {
+    console.log(id, user_id);
+    if (user_id && id && window.confirm("Are you sure you want to delete this account?")) {
+      setLoadingSpinner(true);
+      const {data, error} = await supabase
+        .from("whitelist")
+        .delete()
+        .eq("user_id", userId)
+        .select()
+        // .match({ account: account })
+        .then((res) => {
+          console.log(res);
+          // if (res.status === 200) {
+          //   setWhitelistAccounts(whitelistAccounts.filter(a => a.account !== account));
+          // }
+        });
+
+        console.log(data, error);
     }
-  };
+    setLoadingSpinner(false);
+  }
 
   useEffect(() => {
     if (accountName.length > 0) {
@@ -47,7 +69,7 @@ export default function Whitelist({ userId }) {
       const getData = async () => {
         const data = await searchAccount(accountName);
         setSearchAccounts(data.data[0].users);
-      setLoadingSpinner(false)
+        setLoadingSpinner(false)
 
       };
       getData();
@@ -55,20 +77,20 @@ export default function Whitelist({ userId }) {
   }, [accountName]);
 
   useEffect(() => {
-    const getTargetingAccounts = async () => {
+    const getWhitelistedAccounts = async () => {
       const { data, error } = await supabase
         .from("whitelist")
         .select()
         .eq("user_id", userId);
       console.log(
-        "🚀 ~ file: Whitelist.jsx:55 ~ getTargetingAccounts ~ error",
+        "🚀 ~ file: Whitelist.jsx:55 ~ getWhitelistedAccounts ~ error",
         error
       );
       setWhitelistAccounts(data);
     };
 
-    getTargetingAccounts();
-  }, [userId, selectAccountName]);
+    getWhitelistedAccounts();
+  }, [userId, modalIsOpen]);
 
   const subtitle = "Add users you wish to continue following that were followed by us. We will never unfollow anyone you manually followed."
   const extraSubtitle = "If you wish to continue following a user that we automatically followed for you, add them here and we won’t unfollow them. Remember, we will never unfollow anyone you manually followed before or after using our service - this only applies to users we followed for you."
@@ -79,8 +101,10 @@ export default function Whitelist({ userId }) {
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         title="Add to a Whitelist"
-        subtitle={subtitle} 
+        subtitle={subtitle}
         extraSubtitle={extraSubtitle}
+        setSelectedAccountName={setSelectedAccountName}
+        SelectedAccountName={selectAccountName}
       />
 
       <div className="shadow-targeting my-12">
@@ -92,30 +116,33 @@ export default function Whitelist({ userId }) {
               <h2 className="text-white">{whitelistAccounts.length}</h2>
             </div>
           </div>
-          <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => {setIsOpen(!modalIsOpen)}}>
-            <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold"/>
+          <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => { setIsOpen(!modalIsOpen) }}>
+            <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
           </div>
         </div>
         {/* body */}
         <div className="grid p-8 gap-4">
           {whitelistAccounts.map((item) => {
+            // console.log(item);
             return (
               <>
-              <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
-                <div className="flex gap-3">
-                  <img src={avatarImg || item.avatar} className="h-11 w-11" alt={item.account} crossOrigin="Anonymous" />
-                  <div className="flex flex-col">
-                    <h1 className="font-bold">@{item.account}</h1>
-                    <p>{numFormatter(item.followers)} Followers</p>
+                <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
+                  <div className="flex gap-3">
+                    <img src={avatarImg || item.avatar} className="h-11 w-11" alt={item.account} crossOrigin="Anonymous" />
+                    <div className="flex flex-col">
+                      <h1 className="font-bold">@{item.account}</h1>
+                      <p>{numFormatter(item.followers)} Followers</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3 items-center">
+                    <p>{countDays(item.created_at)}</p>
+                    <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 mr-5  cursor-pointer">
+                      <ImBin2 className="absolute text-[#8C8C8C] font-semibold"
+                        onClick={() => deleteAccount(item.id, item.user_id, item.account)}
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-3 items-center">
-                  <p>{countDays(item.created_at)}</p>
-                  <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 mr-5  cursor-pointer">
-                    <ImBin2 className="absolute text-[#8C8C8C] font-semibold"/>
-                  </div>
-                </div>
-              </div>
               </>
             );
           })}
