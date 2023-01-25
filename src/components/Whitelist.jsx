@@ -7,6 +7,7 @@ import avatarImg from "../images/avatar.svg"
 import { ImBin2 } from "react-icons/im"
 import { BsFillPlusSquareFill } from "react-icons/bs"
 import ModalAdd from "../components/ModalAdd"
+import { Spinner } from "react-bootstrap";
 
 Modal.setAppElement('#root');
 
@@ -19,6 +20,7 @@ export default function Whitelist({ userId }) {
 
   const [loading, setLoading] = useState(false);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+  const [addSuccess, setAddSuccess] = useState(false);
 
   // const insertWhitelist = async () => {
   //   setLoading(true);
@@ -52,23 +54,26 @@ export default function Whitelist({ userId }) {
       };
       getData();
     }
-  }, [accountName]);
+  }, [accountName, addSuccess]);
 
   useEffect(() => {
     const getWhitelistedAccounts = async () => {
+      setLoadingSpinner(true)
       const { data, error } = await supabase
         .from("whitelist")
         .select()
-        .eq("user_id", userId);
+        .eq("user_id", userId)
+        .order('id', { ascending: false });
       console.log(
         "🚀 ~ file: Whitelist.jsx:55 ~ getWhitelistedAccounts ~ error",
         error
       );
       setWhitelistAccounts(data);
+      setLoadingSpinner(false)
     };
 
     getWhitelistedAccounts();
-  }, [userId, modalIsOpen]);
+  }, [userId, selectAccountName, addSuccess]);
 
   const subtitle = "Add users you wish to continue following that were followed by us. We will never unfollow anyone you manually followed."
   const extraSubtitle = "If you wish to continue following a user that we automatically followed for you, add them here and we won’t unfollow them. Remember, we will never unfollow anyone you manually followed before or after using our service - this only applies to users we followed for you."
@@ -79,10 +84,12 @@ export default function Whitelist({ userId }) {
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         title="Add to a Whitelist"
-        id='whitelist'
+        from='whitelist'
         subtitle={subtitle}
         extraSubtitle={extraSubtitle}
         userId={userId}
+        setAddSuccess={setAddSuccess}
+        addSuccess={addSuccess}
       />
 
       <div className="shadow-targeting my-12">
@@ -93,6 +100,7 @@ export default function Whitelist({ userId }) {
             <div className="bg-gray20 rounded w-8 h-8 flex justify-center items-center">
               <h2 className="text-white">{whitelistAccounts.length}</h2>
             </div>
+            {loadingSpinner && (<Spinner animation="border" />)}
           </div>
           <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => { setIsOpen(!modalIsOpen) }}>
             <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
@@ -117,7 +125,10 @@ export default function Whitelist({ userId }) {
                     <p className="hidden md:flex">{countDays(item.created_at)}</p>
                     <div className="rounded-[4px] bg-[#D9D9D9] p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
                       <ImBin2 className="absolute text-[#8C8C8C] font-semibold"
-                        onClick={() => deleteAccount(item.id, item.user_id, item.account)}
+                        onClick={ async () => {
+                          await deleteAccount('whitelist', item.id, item.user_id, item.account);
+                          setAddSuccess(!addSuccess)
+                        }}
                       />
                     </div>
                   </div>
