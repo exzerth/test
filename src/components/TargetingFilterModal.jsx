@@ -25,7 +25,9 @@ export default function TargetingFilterModal(props) {
       <Modal.Header id="custom-header" closeButton={false}>
         <div className="flex flex-col">
           <Modal.Title className="font-bold text-[20px] mb-2">Targeting Filters</Modal.Title>
-          <p className="font-bold text-sm opacity-40 w-full">Here you can add preferences for your ideal follower. Before any follow or like we do, target will be checked if it complies to your liking.</p>
+          <p className="font-bold text-sm opacity-40 w-full">
+            Here you can add preferences for your ideal follower. Before any follow or like we do, target will be checked if it complies to your liking.
+            </p>
         </div>
         <div className="flex justify-end">
           <IoClose
