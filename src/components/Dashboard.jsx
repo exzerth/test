@@ -47,7 +47,7 @@ export default function Dashboard() {
   if (error) return <Error value={id} />;
 
   return (
-    <div className="container mx-auto md:px-6 max-w-[1080px]">
+    <div className="container mx-auto px-6">
       <StatsSection
         user_id={data?.[0]?.id}
         username={data?.[0]?.username}

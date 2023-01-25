@@ -97,21 +97,22 @@ export default function Blacklist({ userId }) {
           </div>
         </div>
         {/* body */}
-        <div className="grid p-8 gap-4">
+        <div className="grid p-5 md:p-8 gap-4">
           {blacklistAccounts.map((item, index) => {
             return (
               <div key={index}>
               <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
                 <div className="flex gap-3">
-                  <img src={item.avatar || avatarImg} className="h-11 w-11 rounded-full" alt={item.account} crossOrigin="Anonymous" />
+                  <img src={item.avatar || avatarImg} className="h-11 w-11 rounded-full self-center" alt={item.account} crossOrigin="Anonymous" />
                   <div className="flex flex-col">
                     <h1 className="font-bold">@{item.account}</h1>
                     <p>{numFormatter(item.followers)} Followers</p>
+                  <p className="md:hidden">{countDays(item.created_at)}</p>
                   </div>
                 </div>
                 <div className="flex gap-3 items-center">
-                  <p>{countDays(item.created_at)}</p>
-                  <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 mr-5  cursor-pointer">
+                  <p className="hidden md:flex">{countDays(item.created_at)}</p>
+                  <div className="rounded-[4px] bg-[#D9D9D9] p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
                     <ImBin2 className="absolute text-[#8C8C8C] font-semibold"
                     onClick={() => deleteAccount(item.id, item.user_id, item.account)}
                     />

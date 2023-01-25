@@ -76,16 +76,16 @@ export default function Subscriptions() {
 
   return (
     <>
-    <div className="container lg:mx-auto sm:px-6">
-      <div className="flex flex-col justify-center items-center mt-20">
-        <div className="flex gap-5 text-semibold mb-20">
+    <div className="container mx-auto px-6">
+      <div className="flex flex-col justify-center items-center mt-12 md:mt-20">
+        <div className="flex items-center gap-4 md:gap-5 text-semibold mb-10 text-center">
           <p className="opacity-40 text-sm font-bold">Select Your Account</p>
-          <div className="rounded-[4px] bg-[#D9D9D9] relative w-5 h-5 cursor-pointer">
-            <RxCaretRight className="absolute text-[#8C8C8C] font-semibold text-lg"/>
+          <div className="rounded-[4px] bg-[#D9D9D9] relative w-6 h-[18px] md:w-5 md:h-5 cursor-pointer">
+            <RxCaretRight className="absolute text-[#8C8C8C] font-semibold text-[17px]"/>
           </div>
           <p className="text-primaryblue opacity-40 text-sm font-bold">Complete Setup</p>
-          <div className="rounded-[4px] bg-[#D9D9D9] relative w-5 h-5 cursor-pointer">
-            <RxCaretRight className="absolute text-[#8C8C8C] font-semibold text-lg"/>
+          <div className="rounded-[4px] bg-[#D9D9D9] relative w-6 h-[18px] md:w-5 md:h-5 cursor-pointer">
+            <RxCaretRight className="absolute text-[#8C8C8C] font-semibold text-[17px]"/>
           </div>
           <p className="text-gray20 opacity-40 text-sm font-bold">Enter Dashboard</p>
         </div>

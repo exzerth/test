@@ -88,21 +88,21 @@ const ModalAdd = ({ modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, user
             }}
           />
         </div>
-        <div className="grid justify-center items-center">
+        <div className="grid grid-cols-1 justify-center items-center">
           <h1 className='font-bold text-black text-[40px] text-center pb-3'>{title}</h1>
-          <p className='font-bold text-sm opacity-40 text-center px-[100px]'>{subtitle}</p>
-          <div className="flex justify-center items-center relative pt-8">
-            <div className="flex gap-3">
-              <Typeahead className='w-[600px] bg-inputbkgrd rounded py-[25px] pl-7 font-semibold'
+          <p className='font-bold text-sm opacity-40 text-center lg:px-[100px]'>{subtitle}</p>
+          <div className="relative pt-8">
+              <Typeahead
                 onInputChange={(text) => setAccountName(text)}
                 id="pk"
                 onChange={(selected) => {
                   setSelectedAccountName(selected[0]?.username);
                 }}
                 labelKey="@username"
-                options={searchAccounts} />
-            </div>
-            <button className='absolute top-[38%] right-[13%] bg-black w-40 py-4 font-semibold rounded text-white'
+                placeholder='@username'
+                options={searchAccounts}
+                inputProps={{ className: 'w-full bg-inputbkgrd rounded py-[25px] font-semibold' }} />
+            <button className='absolute top-[38%] right-[2.5%] bg-black w-32 md:w-40 py-4 font-semibold rounded text-white'
               onClick={() => insertWhitelist()}
             >{loading ? "Loading..." : "Add"}</button>
             {/* <InputGroup className="mb-3 mt-3">
@@ -128,7 +128,7 @@ const ModalAdd = ({ modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, user
                 {loading ? "Loading..." : "Whitelist Account"}
               </Button> */}
           </div>
-          <p className='font-bold text-sm opacity-40 text-center px-[120px] pt-14'>{extraSubtitle}</p>
+          <p className='font-bold text-sm opacity-40 text-center lg:px-[120px] pt-8 pb-5'>{extraSubtitle}</p>
         </div>
       </div>
 

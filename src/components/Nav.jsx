@@ -34,7 +34,7 @@ export default function Nav() {
   return (
     <nav className="bg-white shadow-nav py-2">
       <div
-        className="container lg:mx-auto sm:px-6 flex justify-between"
+        className="container mx-auto px-6 flex justify-between"
       >
         <Link to="/" className="navbar-brand" href="#">
           <img src={sproutyLogo} alt="sprouty social" />
