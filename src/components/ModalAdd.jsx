@@ -94,7 +94,7 @@ const ModalAdd = ({ modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, user
           <div className="flex justify-center items-center relative pt-8">
             <div className="flex gap-3">
               <div>@</div>
-              <Typeahead className='w-[600px] bg-inputbkgrd rounded py-[25px] pl-7 font-semibold'
+              <Typeahead className='w-full bg-inputbkgrd rounded py-[25px] pl-7 font-semibold'
                 onInputChange={(text) => setAccountName(text)}
                 id="pk"
                 onChange={(selected) => {

@@ -15,6 +15,7 @@ import TargetingFilterModal from "./TargetingFilterModal";
 import ModalNew from "./ModalNew";
 import avatarImg from "../images/avatar.svg"
 import { ImBin2 } from "react-icons/im"
+import { BsFillPlusSquareFill } from "react-icons/bs";
 
 Modal.setAppElement('#root');
 
@@ -121,6 +122,9 @@ export default function Targeting({ userId, avatar, username }) {
             <Button onClick={() => setFilterModal(true)}>
               Targeting Filter
             </Button>
+            <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => { setAddModal(!addModal) }}>
+              <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
+            </div>
           </div>
         </div>
         {/* body */}
