@@ -50,7 +50,7 @@ export default function TargetingFilterModal(props) {
                   min={200}
                   max={20000}
                   onChange={({ min, max }) => {
-                    console.log(min, max);
+                    // console.log(min, max);
                     setFollowerMinValue(min);
                     setFollowerMaxValue(max);
                     if(min>followerMinValue && max<followerMaxValue) {

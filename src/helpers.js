@@ -1,14 +1,14 @@
 import axios from "axios";
 import { supabase } from "./supabaseClient";
 
-export const numFormatter = (num = 0) => {  
+export const numFormatter = (num = 0) => {
   if (num > 999 && num <= 999949) {
     return `${(num / 1000).toFixed(1)}k`;
   }
 
   if (num > 999949) {
     return `${(num / 1000000).toFixed(1)}m`;
-  }  
+  }
 
 
   if (num === 0) return 0
@@ -35,31 +35,30 @@ export const dateFormatter = (timeFrame) => {
   }
 
   const months = [
-    {month:'Jan', days: 31}, {month:'Feb', days: 28}, {month: 'Mar', days: 31}, 
-    {month: 'Apr', days: 30}, {month: 'May', days: 31}, {month: 'Jun', days: 30}, 
-    {month: 'Jul', days: 31}, {month: 'Aug', days: 31}, {month: 'Sep', days: 30}, 
-    {month: 'Oct', days: 31}, {month: 'Nov', days: 30}, {month: 'Dec', days: 31}
+    { month: 'Jan', days: 31 }, { month: 'Feb', days: 28 }, { month: 'Mar', days: 31 },
+    { month: 'Apr', days: 30 }, { month: 'May', days: 31 }, { month: 'Jun', days: 30 },
+    { month: 'Jul', days: 31 }, { month: 'Aug', days: 31 }, { month: 'Sep', days: 30 },
+    { month: 'Oct', days: 31 }, { month: 'Nov', days: 30 }, { month: 'Dec', days: 31 }
   ]
 
-  const today = new Date(); 
+  const today = new Date();
   console.log("🚀 ~ file: helpers.js:42 ~ dateFormatter ~ today", today)
-  
-  let previousMonth; 
-  let currentDate; 
+
+  let previousMonth;
+  let currentDate;
   let previousDate;
 
-  if (timeFrame === "Monthly") {    
+  if (timeFrame === "Monthly") {
     // ex. Month ---  Mar
     currentDate = `${months[today.getMonth()].month}`
-    previousDate = `${ months[today.getMonth() - 1].month ? months[today.getMonth() - 1].month : 'Dec' }`; 
-  } 
-  
+    previousDate = `${months[today.getMonth() - 1].month ? months[today.getMonth() - 1].month : 'Dec'}`;
+  }
+
   else if (timeFrame === "Daily") {
     // ex. Day and Month ---  25 Mar
-    currentDate = `${ today.getDate() } ${ months[today.getMonth()].month }`;
-    previousDate = `${ 
-        today.getDate() - 1 ? today.getDate() - 1 : getPrevDay().days} ${ previousMonth ? previousMonth : months[today.getMonth()].month 
-      }`;  
+    currentDate = `${today.getDate()} ${months[today.getMonth()].month}`;
+    previousDate = `${today.getDate() - 1 ? today.getDate() - 1 : getPrevDay().days} ${previousMonth ? previousMonth : months[today.getMonth()].month
+      }`;
   }
 
   return [previousDate, currentDate]
@@ -68,16 +67,16 @@ export const dateFormatter = (timeFrame) => {
 export const getRateDiff = (currRate, prevRate) => {
 
   //get percentage value 
-  let percent = (currRate/prevRate) * 100
+  let percent = (currRate / prevRate) * 100
 
   // if 'percent' is more than a 100, it means there was an increase from the previous value
   if (percent > 100) {
     // subtract from 100 to get the value of by HOW MUCH the current value increased 
     return {
-      change: 'more', 
+      change: 'more',
       value: percent - 100
     }
-    
+
   }
 
   // if 'percent' is less than a 100, it means there was an DECREASE from the previous value
@@ -85,7 +84,7 @@ export const getRateDiff = (currRate, prevRate) => {
     // get the value of by HOW MUCH it decreased compared to the before value 
     return {
       change: 'less',
-      value: 100 - percent 
+      value: 100 - percent
     }
   }
 
@@ -101,8 +100,8 @@ export const countDays = (day) => {
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
 
-  today = yyyy + "-" + mm + "-" +  dd ;
-  
+  today = yyyy + "-" + mm + "-" + dd;
+
   if (today === day) return "today"
 
   var date1 = new Date(day);
@@ -111,7 +110,7 @@ export const countDays = (day) => {
   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
   return Difference_In_Days === 1 ? "one day ago" : Difference_In_Days + " days ago";
-} 
+}
 
 export const getAccount = async (account) => {
   const options = {
@@ -128,19 +127,19 @@ export const getAccount = async (account) => {
 
   return userResults
 }
-export const searchAccount = async  (username) => {
+export const searchAccount = async (username) => {
   const options = {
     method: 'GET',
     url: 'https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile',
-    params: {ig: username, response_type: 'search', corsEnabled: 'true'},
+    params: { ig: username, response_type: 'search', corsEnabled: 'true' },
     headers: {
       'X-RapidAPI-Key': '47e2a82623msh562f6553fe3aae6p10b5f4jsn431fcca8b82e',
       'X-RapidAPI-Host': 'instagram-bulk-profile-scrapper.p.rapidapi.com'
     }
   };
-  
-  const  request = await axios.request(options)
-  
+
+  const request = await axios.request(options)
+
   return request
 }
 
@@ -150,7 +149,7 @@ export const totalLikes = (name) => {
   const options = {
     method: 'GET',
     url: 'https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/ig_profile',
-    params: {ig: name, response_type: 'feeds'},
+    params: { ig: name, response_type: 'feeds' },
     headers: {
       'X-RapidAPI-Key': '47e2a82623msh562f6553fe3aae6p10b5f4jsn431fcca8b82e',
       'X-RapidAPI-Host': 'instagram-bulk-profile-scrapper.p.rapidapi.com'
@@ -168,26 +167,14 @@ export const totalLikes = (name) => {
 
 
 export const getThDayNameFromDate = (date) => {
-  const day = new Date(date).toDateString().slice(0,3);
-return day
+  const day = new Date(date).toDateString().slice(0, 3);
+  return day
 }
 
-export const deleteAccount = async (id, user_id, account) => {
-  console.log(id, user_id);
-  if (user_id && id && window.confirm("Are you sure you want to delete this account?")) {
-    const { data, error } = await supabase
-      .from("whitelist")
-      .delete()
-      .select()
-      .eq("user_id", user_id)
-      // .match({ account: account })
-      .then((res) => {
-        console.log(res);
-        // if (res.status === 200) {
-        //   setWhitelistAccounts(whitelistAccounts.filter(a => a.account !== account));
-        // }
-      });
-
+export const deleteAccount = async (from, id, account) => {
+  console.log(from, id, account);
+  if (id && window.confirm("Are you sure you want to delete this account?")) {
+    const { data, error } = await supabase.from(from).delete().eq('account', account);
     console.log(data, error);
   }
 }
@@ -224,19 +211,19 @@ export const deleteAccount = async (id, user_id, account) => {
       //         <span style={{color: 'green'}} className="mr-2">
       //           <i className="fas fa-long-arrow-alt-up mr-1" />
       //           {growth}%
-      //         </span> 
+      //         </span>
       //         More than last {dropDown === "Daily" ? 'day' : 'month'}
-      //       </p> 
+      //       </p>
       //     );
       //   }
 
       //   return (
       //     <p className="text-muted mb-0" style={{fontSize: '0.8rem'}}>
       //       <span style={{color: 'red'}} className="mr-2">
-      //         <i className="fas fa-long-arrow-alt-down mr-1" /> 
+      //         <i className="fas fa-long-arrow-alt-down mr-1" />
       //         {growth}%
       //       </span >
       //       Less than last {dropDown === "Daily" ? 'day' : 'month'}
       //     </p>
-      //   ); 
+      //   );
       // }
