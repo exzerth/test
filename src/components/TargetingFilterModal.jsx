@@ -42,6 +42,7 @@ export default function TargetingFilterModal(props) {
                 <label className="font-semibold text-base">Followers</label>
                 <MultiRangeSlider
                   margic={margic}
+                  setMargic={setMargic}
                   className="range mb-2"
                   title="followers"
                   min={200}
@@ -50,7 +51,7 @@ export default function TargetingFilterModal(props) {
                     console.log(min, max);
                     setFollowerMinValue(min);
                     setFollowerMaxValue(max);
-                    if(min>followerMinValue && max<20000) {
+                    if(min>followerMinValue && max<followerMaxValue) {
                       console.log(min);
                       setMargic(false);
                     }
@@ -61,15 +62,19 @@ export default function TargetingFilterModal(props) {
                 <label className="font-semibold text-base mt-4">Following</label>
                 <MultiRangeSlider
                   margic={margic}
+                  setMargic={setMargic}
                   className="range mb-2"
                   title="followers"
-                  min={followingMinValue}
-                  max={followingMaxValue}
+                  min={200}
+                  max={750}
                   onChange={({ min, max }) => {
-                    // setFollowingValue(`min = ${min}, max = ${max}`);
+                    console.log(min, max);
                     setFollowingMinValue(min);
                     setFollowingMaxValue(max);
-                    if(min>200 && max<7500) setMargic(false);
+                    if(min>followingMinValue && max<followingMaxValue) {
+                      console.log(min);
+                      setMargic(false);
+                    }
                   }}
                 />
               </div>
@@ -77,15 +82,19 @@ export default function TargetingFilterModal(props) {
                 <label className="font-semibold text-base mt-4">Media</label>
                 <MultiRangeSlider
                   margic={margic}
+                  setMargic={setMargic}
                   className="range mb-2"
                   title="followers"
-                  min={mediaMinValue}
-                  max={mediaMaxValue}
+                  min={10}
+                  max={1000}
                   onChange={({ min, max }) => {
-                    // setMediaValue(`min = ${min}, max = ${max}`);
+                    console.log(min, max);
                     setMediaMinValue(min);
                     setMediaMaxValue(max);
-                    if(min>10 && max<1000) setMargic(false);
+                    if(min>mediaMinValue && max<mediaMaxValue) {
+                      console.log(min);
+                      setMargic(false);
+                    }
                   }}
                 />
               </div>
