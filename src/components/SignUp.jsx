@@ -46,7 +46,7 @@ export default function SignUp() {
     <div className="flex flex-col justify-center items-center">
       <form className="shadow-2-strong p-5">
         <div className="flex flex-col justify-center items-center pb-10">
-          <img className="w-48 h-40 mt-5" src={sproutyLogo} alt="sprouty social" />
+          <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="sprouty social" />
           <h5 className="font-bold text-[40px] text-gray20">Create an account</h5>
           <p className="text-center font-bold text-sm opacity-40">Start growing ~1-10k real and targeted Instagram followers every month.</p>
         </div>
