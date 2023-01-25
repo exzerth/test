@@ -1,21 +1,12 @@
 /* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from 'react-modal';
-import {
-  Button,
-} from "react-bootstrap";
-import Table from "react-bootstrap/Table";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { countDays, deleteAccount, getAccount, numFormatter, searchAccount } from "../helpers";
 import { supabase } from "../supabaseClient";
-import { Typeahead } from "react-bootstrap-typeahead"; // ES2015
-import TargetingFilterModal from "./TargetingFilterModal";
-//import CustomSettingsModal from "./CustomSettingsModal";
-import ModalNew from "./ModalNew";
 import avatarImg from "../images/avatar.svg"
 import { ImBin2 } from "react-icons/im"
-import { BsFillPlusSquareFill } from "react-icons/bs";
+import { BsFillPlusSquareFill } from "react-icons/bs"
+import ModalAdd from "./ModalAdd";
 
 Modal.setAppElement('#root');
 
@@ -25,7 +16,6 @@ export default function Targeting({ userId, avatar, username }) {
   const [accountName, setAccountName] = useState("");
   const [selectAccountName, setSelectedAccountName] = useState("");
   const [searchAccounts, setSearchAccounts] = useState([]);
-  const [FilterModal, setFilterModal] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -87,26 +77,18 @@ export default function Targeting({ userId, avatar, username }) {
     getTargetingAccounts();
   }, [userId, selectAccountName]);
 
+  const subtitle = "Set up your targeting by adding relevant username of an account."
+  const extraSubtitle = "Add Accounts to use as sources for your targeting. Adding accounts as targets will interact with users who follow that account. For optimal results, aim for a follow-back rate of 15%+ across all targets."
+
   return (
     <>
-      <TargetingFilterModal
-        show={FilterModal}
-        onHide={() => setFilterModal(false)}
-        setFilterModal={setFilterModal}
-      />
-
-      {/* <CustomSettingsModal
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setIsOpen}
-        avatar={avatar}
-        username={username}
-      /> */}
-
-      <ModalNew
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setIsOpen}
-      />
-
+    <ModalAdd
+      modalIsOpen={modalIsOpen}
+      setIsOpen={setIsOpen}
+      title="Add a Target"
+      subtitle={subtitle} 
+      extraSubtitle={extraSubtitle}
+    />
 
       <div className="shadow-targeting mt-12">
         {/* nav */}
@@ -118,38 +100,35 @@ export default function Targeting({ userId, avatar, username }) {
             </div>
           </div>
           <div className="flex gap-3 text-black">
-            <Button className="text-blue" onClick={() => setIsOpen(!modalIsOpen)} >Custom Settings</Button>
-            <Button onClick={() => setFilterModal(true)}>
-              Targeting Filter
-            </Button>
-            <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => { setAddModal(!addModal) }}>
-              <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
-            </div>
+          <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => {setIsOpen(!modalIsOpen)}}>
+            <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
+          </div>
           </div>
         </div>
         {/* body */}
-        <div className="grid p-8 gap-4">
-          {targetingAccounts.map((item) => {
+        <div className="grid p-5 md:p-8 gap-4">
+          {targetingAccounts.map((item, index) => {
             return (
-              <>
+              <div key={index}>
                 <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
                   <div className="flex gap-3">
-                    <img src={item.avatar || avatarImg} className="h-11 w-11 rounded-full" alt={item.account} crossOrigin="Anonymous" />
+                    <img src={item.avatar || avatarImg} className="h-11 w-11 rounded-full self-center" alt={item.account} crossOrigin="Anonymous" />
                     <div className="flex flex-col">
                       <h1 className="font-bold">@{item.account}</h1>
                       <p>{numFormatter(item.followers)} Followers</p>
+                      <p className="flex md:hidden">{countDays(item.created_at)}</p>
                     </div>
                   </div>
                   <div className="flex gap-3 items-center">
-                    <p>{countDays(item.created_at)}</p>
-                    <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 mr-5 cursor-pointer">
+                    <p className="hidden md:flex">{countDays(item.created_at)}</p>
+                    <div className="rounded-[4px] bg-[#D9D9D9] p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
                       <ImBin2 className="absolute text-[#8C8C8C] font-semibold"
                         onClick={() => deleteAccount(item.id, item.user_id, item.account)}
                       />
                     </div>
                   </div>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>

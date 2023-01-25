@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { IoClose } from 'react-icons/io5';
 import MultiRangeSlider from "./MultiRangeSlider/MultiRangeSlider";
@@ -19,7 +19,7 @@ export default function TargetingFilterModal(props) {
       <Modal.Header id="custom-header" closeButton={false}>
         <div className="flex flex-col">
           <Modal.Title className="font-bold text-[20px] mb-2">Targeting Filters</Modal.Title>
-          <p className="font-bold text-sm opacity-40 w-[400px]">Here you can add preferences for your ideal follower. Before any follow or like we do, target will be checked if it complies to your liking.</p>
+          <p className="font-bold text-sm opacity-40 w-full">Here you can add preferences for your ideal follower. Before any follow or like we do, target will be checked if it complies to your liking.</p>
         </div>
         <div className="flex justify-end">
           <IoClose
@@ -30,10 +30,10 @@ export default function TargetingFilterModal(props) {
       </Modal.Header>
       <Modal.Body>
         <>
-          <Row>
-            <Col className="d-flex flex-column justify-content-between">
-              <div className="d-flex flex-column gap-2">
-                <label className="font-semibold text-base mb-1">Followers</label>
+          <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-12 p-3">
+            <div className="flex flex-col justify-content-between">
+              <div className="flex flex-col gap-2 w-[80%]">
+                <label className="font-semibold text-base">Followers</label>
                 <MultiRangeSlider
                   className="range mb-2"
                   title="followers"
@@ -44,8 +44,8 @@ export default function TargetingFilterModal(props) {
                   }
                 />
               </div>
-              <div className="d-flex flex-column gap-2 mt-4">
-                <label className="font-semibold text-base mb-1">Following</label>
+              <div className="flex flex-col gap-2 w-[80%] mt-4">
+                <label className="font-semibold text-base mt-4">Following</label>
                 <MultiRangeSlider
                   className="range mb-2"
                   title="followers"
@@ -56,8 +56,8 @@ export default function TargetingFilterModal(props) {
                   }
                 />
               </div>
-              <div className="d-flex flex-column gap-2 mt-4 mb-3">
-                <label className="font-semibold text-base mb-1">Media</label>
+              <div className="flex flex-col gap-2 w-[80%] mt-4 mb-3">
+                <label className="font-semibold text-base mt-4">Media</label>
                 <MultiRangeSlider
                   className="range mb-2"
                   title="followers"
@@ -69,11 +69,11 @@ export default function TargetingFilterModal(props) {
                 />
               </div>
               <button className="bg-[#23DF85] w-full mt-10 rounded-[10px] py-4 text-base text-white font-bold">Magic Filters: ON</button>
-            </Col>
+            </div>
 
             <Col>
               <div>
-                <label className="font-medium text-[15px] mb-1">Privacy</label>
+                <label className="font-medium text-[15px] mb-2">Privacy</label>
                 <Form.Select className="shadow-filter mb-6 rounded-[10px] pl-5" aria-label="Privacy">
                   {/* <option>Open this select menu</option> */}
                   <option value="All">All</option>
@@ -83,7 +83,7 @@ export default function TargetingFilterModal(props) {
               </div>
 
               <div>
-                <label className="font-medium text-[15px] mb-1">Gender</label>
+                <label className="font-medium text-[15px] mb-2">Gender</label>
                 <Form.Select className="shadow-filter mb-6 rounded-[10px] pl-5" aria-label="Gender">
                   {/* <option>Open this select menu</option> */}
                   <option value="1">All</option>
@@ -93,7 +93,7 @@ export default function TargetingFilterModal(props) {
               </div>
 
               <div>
-                <label className="font-medium text-[15px] mb-1">Language</label>
+                <label className="font-medium text-[15px] mb-2">Language</label>
                 <Form.Select className="shadow-filter rounded-[10px] pl-5" aria-label="Privacy">
                   {/* <option>Open this select menu</option> */}
                   <option value="All">All</option>
@@ -110,7 +110,7 @@ export default function TargetingFilterModal(props) {
                 </button>
               </div>
             </Col>
-          </Row>
+          </div>
         </>
       </Modal.Body>
     </Modal>

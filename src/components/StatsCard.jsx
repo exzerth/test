@@ -4,8 +4,8 @@ const StatsCard = () => {
   return (
     <>
     <div className="container mx-auto p-0">
-    <div className="section mt-12 grid md:grid-cols-2 lg:grid-cols-4 justify-center gap-6">
-        <div className="shadow-stats rounded-lg p-4">
+    <div className="section mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-6">
+        <div className="shadow-stats flex flex-col items-center md:items-start rounded-lg p-4">
             <div className="flex gap-[10px]">
                 <div className="rounded-[50%] bg-bgicongreen p-3 relative w-10 h-10">
                     <BsArrowUp className="absolute text-btngreen font-semibold"/>
@@ -14,7 +14,7 @@ const StatsCard = () => {
             </div>
             <p className="pt-4 pb-4 font-normal text-sm">Your status is <span className="font-bold">active</span></p>
         </div>
-        <div className="shadow-stats rounded-lg p-4">
+        <div className="shadow-stats flex flex-col items-center md:items-start rounded-lg p-4">
             <div className="flex gap-[10px]">
                 <div className="rounded-[50%] bg-bgicongreen p-3 relative w-10 h-10">
                     <BsArrowUp className="absolute text-btngreen font-semibold"/>
@@ -24,7 +24,7 @@ const StatsCard = () => {
             <p className="pt-4 pb-4 font-normal text-sm">Last <span className="font-bold">7 days</span> Follower Growth</p>
             <p className="font-normal text-sm opacity-40"><span className="font-bold">23.12</span>% increase from last week</p>
         </div>
-        <div className="shadow-stats rounded-lg p-4">
+        <div className="shadow-stats flex flex-col items-center md:items-start rounded-lg p-4">
             <div className="flex gap-[10px]">
                 <div className="rounded-[50%] bg-bgiconred p-3 relative w-10 h-10">
                     <BsArrowDown className="absolute text-btnred font-semibold"/>
@@ -34,7 +34,7 @@ const StatsCard = () => {
             <p className="pt-4 pb-4 font-normal text-sm">Last <span className="font-bold">30 days</span> Follower Growth</p>
             <p className="font-normal text-sm opacity-40"><span className="font-bold">23.12</span>% increase from last week</p>
         </div>
-        <div className="shadow-stats rounded-lg p-4">
+        <div className="shadow-stats flex flex-col items-center md:items-start rounded-lg p-4">
             <div className="flex gap-[10px]">
                 <div className="rounded-[50%] bg-bgicongreen p-3 relative w-10 h-10">
                     <BsArrowUp className="absolute text-btngreen font-semibold"/>

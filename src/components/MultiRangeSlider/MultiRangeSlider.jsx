@@ -49,7 +49,7 @@ const MultiRangeSlider = ({ min, max, onChange }) => {
   }, [minVal, maxVal, onChange]);
 
   return (
-    <div className="">
+    <div className="relative">
       <input
         type="range"
         min={min}
@@ -80,12 +80,13 @@ const MultiRangeSlider = ({ min, max, onChange }) => {
       />
 
       <div className="slider">
-        <div className="slider__track" />
-        <div ref={range} className="slider__range">
-          <div className="rounded-[10px] bg-[#23DF85] p-2 absolute z-50 -top-[12px] -right-[22%] w-8 h-8 cursor-pointer">
-            <FaMagic className="absolute text-white"/>
-          </div>
+        <div className="absolute z-50 -top-[12px] -right-[25%]">
+            <div className="rounded-[10px] bg-[#23DF85] p-2 w-8 h-8 cursor-pointer">
+              <FaMagic className="absolute text-white"/>
+            </div>
         </div>
+        <div className="slider__track" />
+        <div ref={range} className="slider__range"></div>
         <div className="slider__left-value">{minVal}</div>
         <div className="slider__right-value">{maxVal}</div>
       </div>
