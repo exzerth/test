@@ -178,8 +178,8 @@ export const deleteAccount = async (id, user_id, account) => {
     const { data, error } = await supabase
       .from("whitelist")
       .delete()
-      .eq("user_id", user_id)
       .select()
+      .eq("user_id", user_id)
       // .match({ account: account })
       .then((res) => {
         console.log(res);
