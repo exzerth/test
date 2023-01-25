@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { FaMagic } from "react-icons/fa"
 import "./MultiRangeSlider.css"
 
-const MultiRangeSlider = ({ min, max, onChange, margic }) => {
+const MultiRangeSlider = ({ min, max, onChange, margic, setMargic }) => {
   
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
@@ -61,6 +61,7 @@ const MultiRangeSlider = ({ min, max, onChange, margic }) => {
           setMinVal(value);
           event.target.value = value.toString();
         }}
+        onMouseDownCapture={() => (setMargic(false))}
         className={classnames("thumb thumb--zindex-3", {
           "thumb--zindex-5": minVal > max - 100
         })}
@@ -76,19 +77,20 @@ const MultiRangeSlider = ({ min, max, onChange, margic }) => {
           setMaxVal(value);
           event.target.value = value.toString();
         }}
-        className="thumb thumb--zindex-4"
+        onMouseDownCapture={() => (setMargic(false))}
+        className={`thumb thumb--zindex-4`}
       />
 
       <div className="slider">
         <div className="absolute z-50 -top-[12px] -right-[25%]">
-          <div className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer`}>
+          <div className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer`} onClick={() => {setMargic(!margic)}}>
               <FaMagic className="absolute text-white"/>
             </div>
         </div>
         <div className="slider__track" />
-        <div ref={range} className="slider__range"></div>
-        <div className="slider__left-value">{minVal}</div>
-        <div className="slider__right-value">{maxVal}</div>
+        <div ref={range} className={`slider__range ${margic ? "bg-[#23DF85]" : "bg-gray-600"}`}></div>
+        <div className={`slider__left-value ${margic ? "text-[#23DF85]" : "text-gray-600"}`}>{minVal}</div>
+        <div className={`slider__right-value ${margic ? "text-[#23DF85]" : "text-gray-600"}`}>{maxVal}</div>
       </div>
     </div>
   );

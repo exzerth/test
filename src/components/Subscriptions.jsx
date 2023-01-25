@@ -50,6 +50,10 @@ export default function Subscriptions() {
     getData();
   }, [getData]);
 
+  const goBack = () => {
+    navigate(`/search`)
+  }
+
   const handleOnClick = async () => {
     setLoading(true);
 
@@ -102,7 +106,7 @@ export default function Subscriptions() {
                   </div>
                 </div>
                 <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer">
-                  <TbRefresh className="absolute text-[#8C8C8C] font-semibold cursor-pointer" onClick={getData}/>
+                  <TbRefresh className="absolute text-[#8C8C8C] font-semibold cursor-pointer" onClick={goBack}/>
                 </div>
               </div>
 
@@ -117,8 +121,8 @@ export default function Subscriptions() {
                   <span> {Loading ?  "Loading " : "Card / Debit Card"}  </span>
                 </button>
 
-                <button className="bg-[#FFC439] w-full py-4 rounded-[10px] text-base text-white font-bold relative" onClick={() => handleOnClick()}>
-                  <RiPaypalFill className="text-[#003087] text-2xl absolute top-[25%] left-[38%]" />
+                <button className="bg-[#FFC439] w-full py-4 pl-[30px] rounded-[10px] text-base text-white font-bold relative" onClick={() => handleOnClick()}>
+                  <RiPaypalFill className="text-[#003087] text-2xl absolute top-[25%] left-[36%] md:left-[44%] lg:left-[41%]" />
                   {Loading ? "Loading" : "Paypal"} 
                 </button>
               </div>
