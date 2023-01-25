@@ -1,21 +1,12 @@
 /* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from 'react-modal';
-import {
-  Button,
-} from "react-bootstrap";
-import Table from "react-bootstrap/Table";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { countDays, deleteAccount, getAccount, numFormatter, searchAccount } from "../helpers";
 import { supabase } from "../supabaseClient";
-import { Typeahead } from "react-bootstrap-typeahead"; // ES2015
-import TargetingFilterModal from "./TargetingFilterModal";
-//import CustomSettingsModal from "./CustomSettingsModal";
-import ModalNew from "./ModalNew";
 import avatarImg from "../images/avatar.svg"
 import { ImBin2 } from "react-icons/im"
 import { BsFillPlusSquareFill } from "react-icons/bs"
+import ModalAdd from "./ModalAdd";
 
 Modal.setAppElement('#root');
 
@@ -25,7 +16,6 @@ export default function Targeting({ userId, avatar, username }) {
   const [accountName, setAccountName] = useState("");
   const [selectAccountName, setSelectedAccountName] = useState("");
   const [searchAccounts, setSearchAccounts] = useState([]);
-  const [FilterModal, setFilterModal] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -87,26 +77,18 @@ export default function Targeting({ userId, avatar, username }) {
     getTargetingAccounts();
   }, [userId, selectAccountName]);
 
+  const subtitle = "Set up your targeting by adding relevant username of an account."
+  const extraSubtitle = "Add Accounts to use as sources for your targeting. Adding accounts as targets will interact with users who follow that account. For optimal results, aim for a follow-back rate of 15%+ across all targets."
+
   return (
     <>
-      <TargetingFilterModal
-        show={FilterModal}
-        onHide={() => setFilterModal(false)}
-        setFilterModal={setFilterModal}
-      />
-
-      {/* <CustomSettingsModal
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setIsOpen}
-        avatar={avatar}
-        username={username}
-      /> */}
-
-      <ModalNew
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setIsOpen}
-      />
-
+    <ModalAdd
+      modalIsOpen={modalIsOpen}
+      setIsOpen={setIsOpen}
+      title="Add a Target"
+      subtitle={subtitle} 
+      extraSubtitle={extraSubtitle}
+    />
 
       <div className="shadow-targeting mt-12">
         {/* nav */}
@@ -118,7 +100,7 @@ export default function Targeting({ userId, avatar, username }) {
             </div>
           </div>
           <div className="flex gap-3 text-black">
-          <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer"  onClick={() => setFilterModal(true)}>
+          <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => {setIsOpen(!modalIsOpen)}}>
             <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
           </div>
           </div>

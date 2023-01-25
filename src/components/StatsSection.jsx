@@ -5,10 +5,12 @@ import { numFormatter } from "../helpers"
 import profileImg from "../images/profile.svg"
 import settingsImg from "../images/settings.svg"
 import ModalNew from "./ModalNew"
+import TargetingFilterModal from "./TargetingFilterModal"
 
  
 const StatsSection = ({ avatar, username, isVerified, name, bio, url, user_id, currMediaCount, currFollowers, currFollowing}) => {
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false)
+  const [FilterModal, setFilterModal] = useState(false);
 
     return (
       <div className="shadow-stats mt-8 md:mt-[84px] md:py-7 md:px-16">
@@ -47,13 +49,21 @@ const StatsSection = ({ avatar, username, isVerified, name, bio, url, user_id, c
               </div>
             </div>
             <div className="flex gap-6 justify-center lg:justify-end md:justify-start">
-              <Link className="font-normal text-sm" to={"/dashboard/" + user_id}>
-              <img className="bg-[#D9D9D9] p-3 rounded-[4px]" src={profileImg} alt="" />
+              <Link className="font-normal text-sm">
+              <img className="bg-[#D9D9D9] p-3 rounded-[4px]" src={profileImg} alt="" onClick={() => { setIsOpen(!modalIsOpen)}}/>
               </Link>
-              <img className="bg-[#D9D9D9] p-3 rounded-[4px]" src={settingsImg} alt="" onClick={() => { setIsOpen(!modalIsOpen)}}/>
+              <img className="bg-[#D9D9D9] p-3 rounded-[4px]" src={settingsImg} alt="" onClick={() => setFilterModal(true)}/>
+              
               <ModalNew 
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setIsOpen} />
+              modalIsOpen={modalIsOpen}
+              setIsOpen={setIsOpen} 
+              />
+
+              <TargetingFilterModal
+                show={FilterModal}
+                onHide={() => setFilterModal(false)}
+                setFilterModal={setFilterModal}
+              />
             </div>
           </div>
         </div>
