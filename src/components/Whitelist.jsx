@@ -79,10 +79,10 @@ export default function Whitelist({ userId }) {
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         title="Add to a Whitelist"
+        id='whitelist'
         subtitle={subtitle}
         extraSubtitle={extraSubtitle}
-        setSelectedAccountName={setSelectedAccountName}
-        SelectedAccountName={selectAccountName}
+        userId={userId}
       />
 
       <div className="shadow-targeting my-12">

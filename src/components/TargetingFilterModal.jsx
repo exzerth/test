@@ -6,8 +6,14 @@ import MultiRangeSlider from "./MultiRangeSlider/MultiRangeSlider";
 import "../../src/modalsettings.css"
 
 export default function TargetingFilterModal(props) {
-  const [value, setValue] = useState(0);
-  console.log("🚀 ~ file: CenterModal.jsx:11 ~ CenterModal ~ value", value);
+  const [followerMinValue, setFollowerMinValue] = useState(200);
+  const [followerMaxValue, setFollowerMaxValue] = useState(20000);
+  const [followingMinValue, setFollowingMinValue] = useState(200);
+  const [followingMaxValue, setFollowingMaxValue] = useState(7500);
+  const [mediaMinValue, setMediaMinValue] = useState(10);
+  const [mediaMaxValue, setMediaMaxValue] = useState(1000);
+  const [margic, setMargic] = useState(true);
+  // console.log("🚀 ~ file: CenterModal.jsx:11 ~ CenterModal ~ value", value);
 
   return (
     <Modal
@@ -35,40 +41,58 @@ export default function TargetingFilterModal(props) {
               <div className="flex flex-col gap-2 w-[80%]">
                 <label className="font-semibold text-base">Followers</label>
                 <MultiRangeSlider
+                  margic={margic}
                   className="range mb-2"
                   title="followers"
                   min={200}
                   max={20000}
-                  onChange={({ min, max }) =>
-                    setValue(`min = ${min}, max = ${max}`)
-                  }
+                  onChange={({ min, max }) => {
+                    console.log(min, max);
+                    setFollowerMinValue(min);
+                    setFollowerMaxValue(max);
+                    if(min>followerMinValue && max<20000) {
+                      console.log(min);
+                      setMargic(false);
+                    }
+                  }}
                 />
               </div>
               <div className="flex flex-col gap-2 w-[80%] mt-4">
                 <label className="font-semibold text-base mt-4">Following</label>
                 <MultiRangeSlider
+                  margic={margic}
                   className="range mb-2"
                   title="followers"
-                  min={200}
-                  max={20000}
-                  onChange={({ min, max }) =>
-                    console.log(`min = ${min}, max = ${max}`)
-                  }
+                  min={followingMinValue}
+                  max={followingMaxValue}
+                  onChange={({ min, max }) => {
+                    // setFollowingValue(`min = ${min}, max = ${max}`);
+                    setFollowingMinValue(min);
+                    setFollowingMaxValue(max);
+                    if(min>200 && max<7500) setMargic(false);
+                  }}
                 />
               </div>
               <div className="flex flex-col gap-2 w-[80%] mt-4 mb-3">
                 <label className="font-semibold text-base mt-4">Media</label>
                 <MultiRangeSlider
+                  margic={margic}
                   className="range mb-2"
                   title="followers"
-                  min={10}
-                  max={1000}
-                  onChange={({ min, max }) =>
-                    console.log(`min = ${min}, max = ${max}`)
-                  }
+                  min={mediaMinValue}
+                  max={mediaMaxValue}
+                  onChange={({ min, max }) => {
+                    // setMediaValue(`min = ${min}, max = ${max}`);
+                    setMediaMinValue(min);
+                    setMediaMaxValue(max);
+                    if(min>10 && max<1000) setMargic(false);
+                  }}
                 />
               </div>
-              <button className="bg-[#23DF85] w-full mt-10 rounded-[10px] py-4 text-base text-white font-bold">Magic Filters: ON</button>
+              <button 
+              className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} w-full mt-10 rounded-[10px] py-4 text-base text-white font-bold`}
+              onClick={() => setMargic(!margic)}
+              >Magic Filters: {margic ? 'ON' : 'OFF'}</button>
             </div>
 
             <Col>

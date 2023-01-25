@@ -86,8 +86,10 @@ export default function Targeting({ userId, avatar, username }) {
       modalIsOpen={modalIsOpen}
       setIsOpen={setIsOpen}
       title="Add a Target"
+      id='target'
       subtitle={subtitle} 
       extraSubtitle={extraSubtitle}
+        userId={userId}
     />
 
       <div className="shadow-targeting mt-12">

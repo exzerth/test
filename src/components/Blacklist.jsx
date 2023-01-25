@@ -79,8 +79,10 @@ export default function Blacklist({ userId }) {
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         title="Add to a Blacklist"
+        id='blacklist'
         subtitle={subtitle} 
         extraSubtitle={extraSubtitle}
+        userId={userId}
       />
 
       <div className="shadow-targeting mt-12">

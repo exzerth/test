@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { FaMagic } from "react-icons/fa"
 import "./MultiRangeSlider.css"
 
-const MultiRangeSlider = ({ min, max, onChange }) => {
+const MultiRangeSlider = ({ min, max, onChange, margic }) => {
   
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
@@ -81,7 +81,7 @@ const MultiRangeSlider = ({ min, max, onChange }) => {
 
       <div className="slider">
         <div className="absolute z-50 -top-[12px] -right-[25%]">
-            <div className="rounded-[10px] bg-[#23DF85] p-2 w-8 h-8 cursor-pointer">
+          <div className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} rounded-[10px]  p-2 w-8 h-8 cursor-pointer`}>
               <FaMagic className="absolute text-white"/>
             </div>
         </div>

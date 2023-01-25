@@ -23,7 +23,7 @@ export default function Nav() {
         .from("users")
         .select()
         .eq("user_id", user.id);
-      console.log("🚀 ~ file: Dashboard.jsx:34 ~ getData ~ data", data);
+      // console.log("🚀 ~ file: Dashboard.jsx:34 ~ getData ~ data", data);
       setData(data[0]);
       setError(error);
     };

@@ -5,13 +5,13 @@ import Modal from 'react-modal';
 import { Typeahead } from "react-bootstrap-typeahead"
 import { IoClose } from 'react-icons/io5';
 import "../../src/modalsettings.css"
-import { InputGroup, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { getAccount, searchAccount } from '../helpers';
-import { Button } from 'bootstrap';
+// import { Button } from 'bootstrap';
 
 Modal.setAppElement('#root');
 
-const ModalAdd = ({ modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, userId }) => {
+const ModalAdd = ({ id, modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, userId }) => {
 
   const [whitelistAccounts, setWhitelistAccounts] = useState([]);
   const [accountName, setAccountName] = useState("");
@@ -21,56 +21,108 @@ const ModalAdd = ({ modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, user
   const [loading, setLoading] = useState(false);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
-    const insertWhitelist = async () => {
+    const add = async () => {
       // console.log(selectAccountName);
-      if (selectAccountName.length > 0) {
-      setLoading(true);
-      const theAccount = await getAccount(selectAccountName);
-      const { error } = await supabase.from("whitelist").insert({
-        account: selectAccountName,
-        followers: theAccount.data[0].follower_count,
-        avatar: theAccount.data[0].profile_pic_url,
-        user_id: userId,
-      });
-      console.log(
-        "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
-        error
-      );
+        if (selectAccountName.length > 0) {
+        setLoading(true);
+        const theAccount = await getAccount(selectAccountName);
+        const { error } = await supabase.from(id).insert({
+          account: selectAccountName,
+          followers: theAccount.data[0].follower_count,
+          avatar: theAccount.data[0].profile_pic_url,
+          user_id: userId,
+        });
+        console.log(
+          "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
+          error
+        );
+      // if(id==='whitelist'){
+      //   if (selectAccountName.length > 0) {
+      //   setLoading(true);
+      //   const theAccount = await getAccount(selectAccountName);
+      //   const { error } = await supabase.from("whitelist").insert({
+      //     account: selectAccountName,
+      //     followers: theAccount.data[0].follower_count,
+      //     avatar: theAccount.data[0].profile_pic_url,
+      //     user_id: userId,
+      //   });
+      //   console.log(
+      //     "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
+      //     error
+      //   );
+      // }
+      // if(id==='blacklist'){
+      //   if (selectAccountName.length > 0) {
+      //   setLoading(true);
+      //   const theAccount = await getAccount(selectAccountName);
+      //     const { error } = await supabase.from("blacklist").insert({
+      //     account: selectAccountName,
+      //     followers: theAccount.data[0].follower_count,
+      //     avatar: theAccount.data[0].profile_pic_url,
+      //     user_id: userId,
+      //   });
+      //   console.log(
+      //     "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
+      //     error
+      //   );
+      // }
+      // if(id==='targeting'){
+      //   if (selectAccountName.length > 0) {
+      //   setLoading(true);
+      //   const theAccount = await getAccount(selectAccountName);
+      //   const { error } = await supabase.from("targeting").insert({
+      //     account: selectAccountName,
+      //     followers: theAccount.data[0].follower_count,
+      //     avatar: theAccount.data[0].profile_pic_url,
+      //     user_id: userId,
+      //   });
+      //   console.log(
+      //     "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
+      //     error
+      //   );
+      // }
 
       setAccountName("");
       setSelectedAccountName("");
       setLoading(false);
+      window.location.reload();
     }
   };
 
   useEffect(() => {
-    if (accountName.length > 0) {
+    // if (accountName.length > 0) {
+    if (accountName) {
       setLoadingSpinner(true)
       const getData = async () => {
         const data = await searchAccount(accountName);
-        setSearchAccounts(data.data[0].users);
+        console.log(data.data[0].users);
+        data?.data?.[0]?.users && setSearchAccounts(data.data[0].users);
         setLoadingSpinner(false)
-
       };
       getData();
     }
-  }, [accountName]);
+  }, [id, accountName]);
 
-  useEffect(() => {
-    const getTargetingAccounts = async () => {
-      const { data, error } = await supabase
-        .from("whitelist")
-        .select()
-        .eq("user_id", userId);
-      console.log(
-        "🚀 ~ file: Whitelist.jsx:55 ~ getTargetingAccounts ~ error",
-        error
-      );
-      setWhitelistAccounts(data);
-    };
+  // useEffect(() => {
+  //   // console.log(userId);
+  //   const getAccounts = async () => {
+  //     const { data, error } = await supabase
+  //       .from(id)
+  //       // .from("whitelist")
+  //       .select()
+  //       .eq("user_id", userId);
+  //     console.log(
+  //       "🚀 ~ file: ModalAdd.jsx:116 ~ getAccounts ~ error",
+  //       error
+  //     );
+  //     console.log(data);
+  //     setWhitelistAccounts(data);
+  //   };
 
-    getTargetingAccounts();
-  }, [selectAccountName]);
+  //   getAccounts();
+  // }, [id, selectAccountName]);
+
+  // console.log(searchAccounts);
 
   return (
     <Modal
@@ -91,7 +143,27 @@ const ModalAdd = ({ modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, user
         <div className="grid grid-cols-1 justify-center items-center">
           <h1 className='font-bold text-black text-[40px] text-center pb-3'>{title}</h1>
           <p className='font-bold text-sm opacity-40 text-center lg:px-[100px]'>{subtitle}</p>
-          <div className="relative pt-8">
+          <div className="flex items-center justify-center w-full">
+              <Typeahead
+              className='w-full'
+                onInputChange={(text) => setAccountName(text)}
+                id="pk"
+                onChange={(selected) => {
+                  setSelectedAccountName(selected[0]?.username);
+                }}
+                labelKey="@username"
+                inputProps={
+                  { className: 'w-full bg-inputbkgrd rounded py-[25px] font-semibold' }
+                }
+              options={searchAccounts}
+                placeholder="Search Account"
+              />
+            {loadingSpinner && (<Spinner animation="border" />)}
+            <button className='bg-black w-32 md:w-40 py-[25px] font-semibold rounded text-white'
+              onClick={() => add()}
+            >{loading ? "Loading..." : "Add"}</button>
+          </div>
+          {/* <div className="relative pt-8">
               <Typeahead
                 onInputChange={(text) => setAccountName(text)}
                 id="pk"
@@ -103,57 +175,12 @@ const ModalAdd = ({ modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, user
                 options={searchAccounts}
                 inputProps={{ className: 'w-full bg-inputbkgrd rounded py-[25px] font-semibold' }} />
             <button className='absolute top-[38%] right-[2.5%] bg-black w-32 md:w-40 py-4 font-semibold rounded text-white'
-              onClick={() => insertWhitelist()}
+              onClick={() => add()}
             >{loading ? "Loading..." : "Add"}</button>
-            {/* <InputGroup className="mb-3 mt-3">
-                <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-                <Typeahead
-                  onInputChange={(text) => setAccountName(text)}
-                  id="pk"
-                  onChange={(selected) => {
-                    setSelectedAccountName(selected[0]?.username);
-                  }}
-                  labelKey="username"
-                  options={searchAccounts}
-                />{" "}
-                <div className="ps-2" >
-                  {loadingSpinner && (<Spinner animation="border" />)}
-                </div>
-              </InputGroup>
-              <Button
-                variant="dark"
-                className="mt-5"
-                onClick={() => insertWhitelist()}
-              >
-                {loading ? "Loading..." : "Whitelist Account"}
-              </Button> */}
-          </div>
+          </div> */}
           <p className='font-bold text-sm opacity-40 text-center lg:px-[120px] pt-8 pb-5'>{extraSubtitle}</p>
         </div>
       </div>
-
-      {/* <InputGroup className="mb-3 mt-3">
-                  <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-                  <Typeahead
-                    onInputChange={(text) => setAccountName(text)}
-                    id="pk"
-                    onChange={(selected) => {
-                      setSelectedAccountName(selected[0]?.username);
-                    }}
-                    labelKey="username"
-                    options={searchAccounts}
-                    />{" "}
-                <div className="ps-2" >
-                    {loadingSpinner && (<Spinner animation="border" /> )}
-                </div>
-                </InputGroup>
-                <Button
-                  variant="dark"
-                  className="mt-5"
-                  
-                >
-                  
-                </Button> */}
     </Modal>
   );
 }
