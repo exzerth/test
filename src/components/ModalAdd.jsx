@@ -151,7 +151,7 @@ const ModalAdd = ({ id, modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, 
                 onChange={(selected) => {
                   setSelectedAccountName(selected[0]?.username);
                 }}
-                labelKey="@username"
+                labelKey="username"
                 inputProps={
                   { className: 'w-full bg-inputbkgrd rounded py-[25px] font-semibold' }
                 }

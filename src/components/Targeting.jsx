@@ -26,29 +26,6 @@ export default function Targeting({ userId, avatar, username }) {
     { name: "Hashtag", value: "Hashtag" },
   ];
 
-  const insertTarget = async () => {
-    setLoading(true);
-    if (selectAccountName.length > 0) {
-      const theAccount = await getAccount(selectAccountName);
-
-      const { error } = await supabase.from("targeting").insert({
-        account: selectAccountName,
-        followers: theAccount.data[0].follower_count,
-        avatar: theAccount.data[0].profile_pic_url,
-        performance: "waiting",
-        user_id: userId,
-      });
-      console.log(
-        "🚀 ~ file: Targeting.jsx:40 ~ const{error}=awaitsupabase.from ~ error",
-        error
-      );
-
-      setAccountName("");
-      setSelectedAccountName("");
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (accountName.length > 0) {
       setLoadingSpinner(true);
@@ -125,7 +102,7 @@ export default function Targeting({ userId, avatar, username }) {
                     <p className="hidden md:flex">{countDays(item.created_at)}</p>
                     <div className="rounded-[4px] bg-[#D9D9D9] p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
                       <ImBin2 className="absolute text-[#8C8C8C] font-semibold"
-                        onClick={() => deleteAccount(item.id, item.user_id, item.account)}
+                        onClick={() => deleteAccount('targeting', item.id, item.user_id, item.account)}
                       />
                     </div>
                   </div>
