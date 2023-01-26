@@ -68,7 +68,7 @@ export default function TargetingFilterModal(props) {
                   className="range mb-2"
                   title="followers"
                   min={200}
-                  max={750}
+                  max={7500}
                   onChange={({ min, max }) => {
                     console.log(min, max);
                     setFollowingMinValue(min);

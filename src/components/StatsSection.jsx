@@ -49,14 +49,13 @@ const StatsSection = ({ avatar, username, isVerified, name, bio, url, user_id, c
               </div>
             </div>
             <div className="flex gap-6 justify-center lg:justify-end md:justify-start">
-              <Link className="font-normal text-sm">
               <img className="bg-[#D9D9D9] p-3 rounded-[4px]" src={profileImg} alt="" onClick={() => { setIsOpen(!modalIsOpen)}}/>
-              </Link>
               <img className="bg-[#D9D9D9] p-3 rounded-[4px]" src={settingsImg} alt="" onClick={() => setFilterModal(true)}/>
               
               <ModalNew 
               modalIsOpen={modalIsOpen}
-              setIsOpen={setIsOpen} 
+              setIsOpen={setIsOpen}
+              avatar={avatar}
               />
 
               <TargetingFilterModal
