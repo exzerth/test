@@ -47,7 +47,7 @@ export default function TargetingFilterModal(props) {
                   setMargic={setMargic}
                   className="range mb-2"
                   title="followers"
-                  min={200}
+                  min={1}
                   max={20000}
                   onChange={({ min, max }) => {
                     // console.log(min, max);
@@ -67,7 +67,7 @@ export default function TargetingFilterModal(props) {
                   setMargic={setMargic}
                   className="range mb-2"
                   title="followers"
-                  min={200}
+                  min={1}
                   max={7500}
                   onChange={({ min, max }) => {
                     console.log(min, max);
@@ -87,7 +87,7 @@ export default function TargetingFilterModal(props) {
                   setMargic={setMargic}
                   className="range mb-2"
                   title="followers"
-                  min={10}
+                  min={1}
                   max={1000}
                   onChange={({ min, max }) => {
                     console.log(min, max);
