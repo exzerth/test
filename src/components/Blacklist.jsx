@@ -125,7 +125,7 @@ export default function Blacklist({ userId }) {
                   <div className="rounded-[4px] bg-[#D9D9D9] p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
                     <ImBin2 className="absolute text-[#8C8C8C] font-semibold"
                         onClick={async () => {
-                          await deleteAccount('blacklist', item.id, item.user_id, item.account);
+                          await deleteAccount('blacklist', item.id);
                           setAddSuccess(!addSuccess)
                         }}
                     />

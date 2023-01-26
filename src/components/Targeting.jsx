@@ -48,7 +48,7 @@ export default function Targeting({ userId, avatar, username }) {
         .select()
         .eq("user_id", userId)
         .order('id', { ascending: false });
-      console.log(
+      error && console.log(
         "🚀 ~ file: Targeting.jsx:63 ~ getTargetingAccounts ~ error",
         error
       );
@@ -95,6 +95,7 @@ export default function Targeting({ userId, avatar, username }) {
         {/* body */}
         <div className="grid p-5 md:p-8 gap-4">
           {targetingAccounts.map((item, index) => {
+            // console.log(item);
             return (
               <div key={index}>
                 <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
@@ -111,7 +112,10 @@ export default function Targeting({ userId, avatar, username }) {
                     <div className="rounded-[4px] bg-[#D9D9D9] p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
                       <ImBin2 className="absolute text-[#8C8C8C] font-semibold"
                         onClick={ async () => {
-                          await deleteAccount('targeting', item.id, item.user_id, item.account);
+                          // const res = await deleteAccount('targeting', item.id);
+                          // console.log(res);
+                          console.log(item.id);
+                          await supabase.from('targeting').delete().eq('id', item.id).select()
                           setAddSuccess(!addSuccess)
                         }}
                       />
