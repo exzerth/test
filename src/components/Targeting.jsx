@@ -7,6 +7,7 @@ import avatarImg from "../images/avatar.svg"
 import { ImBin2 } from "react-icons/im"
 import { BsFillPlusSquareFill } from "react-icons/bs"
 import ModalAdd from "./ModalAdd";
+import { Spinner } from "react-bootstrap";
 
 Modal.setAppElement('#root');
 
@@ -20,6 +21,7 @@ export default function Targeting({ userId, avatar, username }) {
 
   const [loading, setLoading] = useState(false);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+  const [addSuccess, setAddSuccess] = useState(false);
 
   const radios = [
     { name: "Account", value: "Account" },
@@ -36,38 +38,43 @@ export default function Targeting({ userId, avatar, username }) {
       };
       getData();
     }
-  }, [accountName]);
+  }, [accountName, addSuccess]);
 
   useEffect(() => {
     const getTargetingAccounts = async () => {
+      setLoadingSpinner(true)
       const { data, error } = await supabase
         .from("targeting")
         .select()
-        .eq("user_id", userId);
-      console.log(
+        .eq("user_id", userId)
+        .order('id', { ascending: false });
+      error && console.log(
         "🚀 ~ file: Targeting.jsx:63 ~ getTargetingAccounts ~ error",
         error
       );
       setTargetingAccounts(data);
+      setLoadingSpinner(false)
     };
 
     getTargetingAccounts();
-  }, [userId, selectAccountName]);
+  }, [userId, selectAccountName, addSuccess]);
 
   const subtitle = "Set up your targeting by adding relevant username of an account."
   const extraSubtitle = "Add Accounts to use as sources for your targeting. Adding accounts as targets will interact with users who follow that account. For optimal results, aim for a follow-back rate of 15%+ across all targets."
 
   return (
     <>
-    <ModalAdd
-      modalIsOpen={modalIsOpen}
-      setIsOpen={setIsOpen}
-      title="Add a Target"
-      id='target'
-      subtitle={subtitle} 
-      extraSubtitle={extraSubtitle}
+      <ModalAdd
+        modalIsOpen={modalIsOpen}
+        setIsOpen={setIsOpen}
+        title="Add a Target"
+        from='targeting'
+        subtitle={subtitle}
+        extraSubtitle={extraSubtitle}
         userId={userId}
-    />
+        setAddSuccess={setAddSuccess}
+        addSuccess={addSuccess}
+      />
 
       <div className="shadow-targeting mt-12">
         {/* nav */}
@@ -77,16 +84,18 @@ export default function Targeting({ userId, avatar, username }) {
             <div className="bg-gray20 rounded w-8 h-8 flex justify-center items-center">
               <h2 className="text-white">{targetingAccounts?.length} </h2>
             </div>
+            {loadingSpinner && (<Spinner animation="border" />)}
           </div>
           <div className="flex gap-3 text-black">
-          <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => {setIsOpen(!modalIsOpen)}}>
-            <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
-          </div>
+            <div className="rounded-[4px] bg-[#D9D9D9] p-3 relative w-10 h-10 cursor-pointer" onClick={() => { setIsOpen(!modalIsOpen) }}>
+              <BsFillPlusSquareFill className="absolute text-[#8C8C8C] font-semibold" />
+            </div>
           </div>
         </div>
         {/* body */}
         <div className="grid p-5 md:p-8 gap-4">
           {targetingAccounts.map((item, index) => {
+            // console.log(item);
             return (
               <div key={index}>
                 <div className="rounded-[4px] border-[#E0E0E0] border border-solid flex justify-between p-3">
@@ -102,7 +111,13 @@ export default function Targeting({ userId, avatar, username }) {
                     <p className="hidden md:flex">{countDays(item.created_at)}</p>
                     <div className="rounded-[4px] bg-[#D9D9D9] p-2 md:p-3 relative w-8 h-8 md:w-10 md:h-10 md:mr-5 cursor-pointer">
                       <ImBin2 className="absolute text-[#8C8C8C] font-semibold"
-                        onClick={() => deleteAccount('targeting', item.id, item.user_id, item.account)}
+                        onClick={ async () => {
+                          // const res = await deleteAccount('targeting', item.id);
+                          // console.log(res);
+                          console.log(item.id);
+                          await supabase.from('targeting').delete().eq('id', item.id).select()
+                          setAddSuccess(!addSuccess)
+                        }}
                       />
                     </div>
                   </div>

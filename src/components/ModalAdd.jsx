@@ -11,7 +11,7 @@ import { getAccount, searchAccount } from '../helpers';
 
 Modal.setAppElement('#root');
 
-const ModalAdd = ({ id, modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, userId }) => {
+const ModalAdd = ({ from, modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, userId, setAddSuccess, addSuccess }) => {
 
   const [whitelistAccounts, setWhitelistAccounts] = useState([]);
   const [accountName, setAccountName] = useState("");
@@ -21,108 +21,44 @@ const ModalAdd = ({ id, modalIsOpen, setIsOpen, title, subtitle, extraSubtitle, 
   const [loading, setLoading] = useState(false);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
+
     const add = async () => {
       // console.log(selectAccountName);
-        if (selectAccountName.length > 0) {
+        if (selectAccountName) {
         setLoading(true);
         const theAccount = await getAccount(selectAccountName);
-        const { error } = await supabase.from(id).insert({
+        // console.log(theAccount);
+        const res = await supabase.from(from).insert({
           account: selectAccountName,
           followers: theAccount.data[0].follower_count,
           avatar: theAccount.data[0].profile_pic_url,
           user_id: userId,
         });
-        console.log(
+          res?.error && console.log(
           "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
-          error
+          res.error
         );
-      // if(id==='whitelist'){
-      //   if (selectAccountName.length > 0) {
-      //   setLoading(true);
-      //   const theAccount = await getAccount(selectAccountName);
-      //   const { error } = await supabase.from("whitelist").insert({
-      //     account: selectAccountName,
-      //     followers: theAccount.data[0].follower_count,
-      //     avatar: theAccount.data[0].profile_pic_url,
-      //     user_id: userId,
-      //   });
-      //   console.log(
-      //     "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
-      //     error
-      //   );
-      // }
-      // if(id==='blacklist'){
-      //   if (selectAccountName.length > 0) {
-      //   setLoading(true);
-      //   const theAccount = await getAccount(selectAccountName);
-      //     const { error } = await supabase.from("blacklist").insert({
-      //     account: selectAccountName,
-      //     followers: theAccount.data[0].follower_count,
-      //     avatar: theAccount.data[0].profile_pic_url,
-      //     user_id: userId,
-      //   });
-      //   console.log(
-      //     "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
-      //     error
-      //   );
-      // }
-      // if(id==='targeting'){
-      //   if (selectAccountName.length > 0) {
-      //   setLoading(true);
-      //   const theAccount = await getAccount(selectAccountName);
-      //   const { error } = await supabase.from("targeting").insert({
-      //     account: selectAccountName,
-      //     followers: theAccount.data[0].follower_count,
-      //     avatar: theAccount.data[0].profile_pic_url,
-      //     user_id: userId,
-      //   });
-      //   console.log(
-      //     "🚀 ~ file: Whitelist.jsx:33 ~ const{error}=awaitsupabase.from ~ error",
-      //     error
-      //   );
-      // }
+        console.log(res);
 
       setAccountName("");
       setSelectedAccountName("");
       setLoading(false);
-      window.location.reload();
+      setAddSuccess(!addSuccess);
+      setIsOpen(!modalIsOpen);
     }
   };
 
   useEffect(() => {
-    // if (accountName.length > 0) {
     if (accountName) {
       setLoadingSpinner(true)
       const getData = async () => {
         const data = await searchAccount(accountName);
-        console.log(data.data[0].users);
         data?.data?.[0]?.users && setSearchAccounts(data.data[0].users);
         setLoadingSpinner(false)
       };
       getData();
     }
-  }, [id, accountName]);
-
-  // useEffect(() => {
-  //   // console.log(userId);
-  //   const getAccounts = async () => {
-  //     const { data, error } = await supabase
-  //       .from(id)
-  //       // .from("whitelist")
-  //       .select()
-  //       .eq("user_id", userId);
-  //     console.log(
-  //       "🚀 ~ file: ModalAdd.jsx:116 ~ getAccounts ~ error",
-  //       error
-  //     );
-  //     console.log(data);
-  //     setWhitelistAccounts(data);
-  //   };
-
-  //   getAccounts();
-  // }, [id, selectAccountName]);
-
-  // console.log(searchAccounts);
+  }, [from, accountName]);
 
   return (
     <Modal
