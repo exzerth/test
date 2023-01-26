@@ -178,6 +178,7 @@ export const deleteAccount = async (from, id) => {
       .match({ id: id })
     // .eq('id', id).select();
     console.log(data, error);
+    // alert('error deleting account! contact admin');
     return (data, error)
   }
 }
