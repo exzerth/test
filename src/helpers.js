@@ -174,7 +174,9 @@ export const getThDayNameFromDate = (date) => {
 export const deleteAccount = async (from, id) => {
   // console.log(from, id);
   if (id && window.confirm("Are you sure you want to delete this account?")) {
-    const { data, error } = await supabase.from('targeting').delete().eq('id', id).select();
+    const { data, error } = await supabase.from('targeting').delete()
+      .match({ id: id })
+    // .eq('id', id).select();
     console.log(data, error);
     return (data, error)
   }
