@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import Blacklist from "./Blacklist";
@@ -44,6 +44,10 @@ export default function Dashboard() {
 
   // console.log({data});
 
+  const setFilterModalCallback = useCallback(() => {
+      setFilterModal(false);
+  }, [setFilterModal]);
+
   if (error) return <Error value={id} />;
 
   return (
@@ -59,6 +63,8 @@ export default function Dashboard() {
         currMediaCount={data?.[0]?.posts}
         currFollowers={data?.[0]?.followers}
         currFollowing={data?.[0]?.following}
+        setFilterModal2={setFilterModalCallback}
+        filterModal2={FilterModal}
       />
       <StatsCard />
       <ChartSection
@@ -69,8 +75,6 @@ export default function Dashboard() {
       <Targeting userId={id}
         avatar={data?.[0]?.profile_pic_url}
         username={data?.[0]?.username}
-        setFilterModal2={setFilterModal}
-        filterModal2={FilterModal}
       />
       <Blacklist userId={id} />
       <Whitelist userId={id} />

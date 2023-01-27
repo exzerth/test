@@ -1,6 +1,5 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { FaCheckCircle } from "react-icons/fa"
-import { Link } from "react-router-dom"
 import { numFormatter } from "../helpers"
 import profileImg from "../images/profile.svg"
 import settingsImg from "../images/settings.svg"
@@ -11,6 +10,10 @@ import TargetingFilterModal from "./TargetingFilterModal"
 const StatsSection = ({ avatar, username, isVerified, name, bio, url, user_id, currMediaCount, currFollowers, currFollowing}) => {
   const [modalIsOpen, setIsOpen] = useState(false)
   const [FilterModal, setFilterModal] = useState(false);
+
+  const setFilterModalCallback = useCallback(() => {
+      setFilterModal(!FilterModal);
+  }, [FilterModal]);
 
     return (
       <div className="shadow-stats mt-8 md:mt-[84px] md:py-7 md:px-16">
@@ -50,7 +53,7 @@ const StatsSection = ({ avatar, username, isVerified, name, bio, url, user_id, c
             </div>
             <div className="flex gap-6 justify-center lg:justify-end md:justify-start">
               <img className="bg-[#D9D9D9] p-3 rounded-[4px]" src={profileImg} alt="" onClick={() => { setIsOpen(!modalIsOpen)}}/>
-              <img className="bg-[#D9D9D9] p-3 rounded-[4px]" src={settingsImg} alt="" onClick={() => setFilterModal(true)}/>
+              <img className="bg-[#D9D9D9] p-3 rounded-[4px]" src={settingsImg} alt="" onClick={setFilterModalCallback}/>
               
               <ModalNew 
               modalIsOpen={modalIsOpen}

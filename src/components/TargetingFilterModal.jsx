@@ -1,19 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Col, Form } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { IoClose } from 'react-icons/io5';
 import MultiRangeSlider from "./MultiRangeSlider/MultiRangeSlider";
 import "../../src/modalsettings.css"
 
-export default function TargetingFilterModal(props) {
-  const [followerMinValue, setFollowerMinValue] = useState(200);
-  const [followerMaxValue, setFollowerMaxValue] = useState(20000);
-  const [followingMinValue, setFollowingMinValue] = useState(200);
-  const [followingMaxValue, setFollowingMaxValue] = useState(7500);
-  const [mediaMinValue, setMediaMinValue] = useState(10);
-  const [mediaMaxValue, setMediaMaxValue] = useState(1000);
+export default function TargetingFilterModal(props, {min, max}) {
+  const stored = {
+    followerMin : parseInt(localStorage.getItem('followerMinValue'), 10) || 1,
+    followerMax : parseInt(localStorage.getItem('followerMaxValue'), 10) || 20000,
+    followingMin : parseInt(localStorage.getItem('followingMinValue'), 10) || 1,
+    followingMax : parseInt(localStorage.getItem('followingMaxValue'), 10) || 10000,
+    mediaMin : parseInt(localStorage.getItem('mediaMinValue'), 10) || 1,
+    mediaMax : parseInt(localStorage.getItem('mediaMaxValue'), 10) || 1000,
+  }
+
+
+  const [followerMinValue, setFollowerMinValue] = useState(stored.followerMin);
+  const [followerMaxValue, setFollowerMaxValue] = useState(stored.followerMax);
+  const [followingMinValue, setFollowingMinValue] = useState(stored.followingMin);
+  const [followingMaxValue, setFollowingMaxValue] = useState(stored.followingMax);
+  const [mediaMinValue, setMediaMinValue] = useState(stored.mediaMin);
+  const [mediaMaxValue, setMediaMaxValue] = useState(stored.mediaMax);
   const [margic, setMargic] = useState(true);
   // console.log("🚀 ~ file: CenterModal.jsx:11 ~ CenterModal ~ value", value);
+
+ const { setFilterModal } = props;
+
+const setFilterModalCallback = useCallback(() => {
+    setFilterModal(false);
+}, [setFilterModal]);
+
+const handleSaveAndClose = () => {
+
+  // Save the values to supabase
+  // Code to save to supabase goes here
+
+  console.log("followerMinValue: ", followerMinValue);
+  console.log("followerMaxValue: ", followerMaxValue);
+  console.log("followingMinValue: ", followingMinValue);
+  console.log("followingMaxValue: ", followingMaxValue);
+  console.log("mediaMinValue: ", mediaMinValue);
+  console.log("mediaMaxValue: ", mediaMaxValue);
+
+  localStorage.setItem('followerMinValue', followerMinValue.toString());
+localStorage.setItem('followerMaxValue', followerMaxValue.toString());
+localStorage.setItem('followingMinValue', followingMinValue.toString());
+localStorage.setItem('followingMaxValue', followingMaxValue.toString());
+localStorage.setItem('mediaMinValue', mediaMinValue.toString());
+localStorage.setItem('mediaMaxValue', mediaMaxValue.toString());
+setFilterModalCallback()
+
+}
 
   return (
     <Modal
@@ -32,7 +70,7 @@ export default function TargetingFilterModal(props) {
         <div className="flex justify-end">
           <IoClose
             className="text-[30px] text-[#8c8c8c]"
-            onClick={() => props.setFilterModal(false)}
+            onClick={setFilterModalCallback}
           />
         </div>
       </Modal.Header>
@@ -47,10 +85,9 @@ export default function TargetingFilterModal(props) {
                   setMargic={setMargic}
                   className="range mb-2"
                   title="followers"
-                  min={1}
-                  max={20000}
+                  min={stored.followerMin}
+                  max={stored.followerMax}
                   onChange={({ min, max }) => {
-                    // console.log(min, max);
                     setFollowerMinValue(min);
                     setFollowerMaxValue(max);
                     if(min>followerMinValue && max<followerMaxValue) {
@@ -67,10 +104,9 @@ export default function TargetingFilterModal(props) {
                   setMargic={setMargic}
                   className="range mb-2"
                   title="followers"
-                  min={1}
-                  max={7500}
+                  min={stored.followingMin}
+                  max={stored.followingMax}
                   onChange={({ min, max }) => {
-                    console.log(min, max);
                     setFollowingMinValue(min);
                     setFollowingMaxValue(max);
                     if(min>followingMinValue && max<followingMaxValue) {
@@ -87,10 +123,9 @@ export default function TargetingFilterModal(props) {
                   setMargic={setMargic}
                   className="range mb-2"
                   title="followers"
-                  min={1}
-                  max={1000}
+                  min={stored.mediaMin}
+                  max={stored.mediaMax}
                   onChange={({ min, max }) => {
-                    console.log(min, max);
                     setMediaMinValue(min);
                     setMediaMaxValue(max);
                     if(min>mediaMinValue && max<mediaMaxValue) {
@@ -102,7 +137,7 @@ export default function TargetingFilterModal(props) {
               </div>
               <button 
               className={`${margic ? "bg-[#23DF85]" : "bg-gray-600"} w-full mt-10 rounded-[10px] py-4 text-base text-white font-bold`}
-              onClick={() => setMargic(!margic)}
+              onClick={() => {setMargic(!margic)}}
               >Magic Filters: {margic ? 'ON' : 'OFF'}</button>
             </div>
 
@@ -139,7 +174,7 @@ export default function TargetingFilterModal(props) {
 
               <div>
                 <button className="bg-secondaryblue w-full mt-10 rounded-[10px] py-4 text-base text-white font-bold"
-                  onClick={() => props.setFilterModal(false)}
+                  onClick={handleSaveAndClose}
                 >
                   Save And Close
                 </button>

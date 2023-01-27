@@ -81,6 +81,9 @@ export default function Nav() {
                 <li className="py-2 px-6 cursor-pointer" onClick={async () => {
                   setIsOpen(!isOpen);
                   await supabase.auth.signOut();
+                  window.onbeforeunload = function() {
+                    localStorage.clear();
+                 }
                   window.location.pathname = "/login";
                 }}>
                   <p className="font-normal text-sm" >

@@ -44,7 +44,7 @@ export default function SignUp() {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <form className="shadow-2-strong p-5">
+      <div className="shadow-2-strong p-5">
         <div className="flex flex-col justify-center items-center pb-10">
           <img className="w-48 h-40 mt-10 lg:mt-14" src={sproutyLogo} alt="sprouty social" />
           <h5 className="font-bold text-[40px] text-gray20">Create an account</h5>
@@ -97,7 +97,7 @@ export default function SignUp() {
             Already have an account? <Link to="/login"><span className="text-primaryblue">Sign in</span></Link>
           </p>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
