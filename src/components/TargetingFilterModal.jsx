@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Col, Form } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { IoClose } from 'react-icons/io5';
@@ -52,6 +52,18 @@ localStorage.setItem('mediaMaxValue', mediaMaxValue.toString());
 setFilterModalCallback()
 
 }
+
+useEffect(() => {
+  return () => {
+    localStorage.removeItem('followerMinValue');
+    localStorage.removeItem('followerMaxValue');
+    localStorage.removeItem('followingMinValue');
+    localStorage.removeItem('followingMaxValue');
+    localStorage.removeItem('mediaMinValue');
+    localStorage.removeItem('mediaMaxValue');
+  };
+}, []);
+
 
   return (
     <Modal
